@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Card, Input } from 'react-native-elements';
+import { Card, Input, Text, Button } from 'react-native-elements';
 import commonStyles from '../Styles/Common';
+import ToggleSwitch from 'toggle-switch-react-native'
 
 export default class LandingPage extends React.Component{
 
@@ -37,8 +38,31 @@ export default class LandingPage extends React.Component{
                             />
                         }
                     />
+                    <View style={styles.rememberMeContainer}>
+                        <ToggleSwitch
+                            isOn={false}
+                            onToggle={ (isOn) => {
+                                console.log(isOn)
+                            }}
+                        />
+                        <Text>
+                            Remember Me
+                        </Text>
+                    </View>
+                    
+                    <Button buttonStyle={styles.loginButton}
+                        title="Log In"
+                    />
                     
                 </Card>
+                <Button buttonStyle={styles.loginButton}
+                    icon={{
+                        name: 'people',
+                        size: 15,
+                        color: 'white'
+                      }}
+                    title="Sign up"
+                    />
             </View>
         )        
     }
@@ -46,13 +70,19 @@ export default class LandingPage extends React.Component{
 
 const styles = StyleSheet.create({
     card: {
-        height:450,
+        height:300,
         width:300,
         borderRadius:10,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'center'
     },
-    cardContent: {
-        
+    rememberMeContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    },
+    loginButton:{        
+        marginVertical:15,
+        backgroundColor:'#A4361A',
+        borderRadius:10,
+        marginHorizontal:70
     }
   });
