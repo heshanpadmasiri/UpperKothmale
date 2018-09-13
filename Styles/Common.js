@@ -6,5 +6,14 @@ export default commonStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
-      }
+    },
+    input_field:{
+        backgroundColor: '#E4D8D5',
+        borderColor: 'red',
+        borderWidth: 2,
+        borderRadius:10,
+        paddingHorizontal: 11,
+        marginVertical:15,
+        marginHorizontal:12
+    }
 })
