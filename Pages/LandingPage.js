@@ -1,15 +1,27 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Card, Input, Text, Button } from 'react-native-elements';
+import { Card, Input, Text, Button, Header, Avatar } from 'react-native-elements';
 import commonStyles from '../Styles/Common';
 import ToggleSwitch from 'toggle-switch-react-native'
 
 export default class LandingPage extends React.Component{
 
     static navigationOptions = {
+        header: props => <Header
+        leftComponent={<Avatar
+            size="small"
+            rounded
+            source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
+            onPress={() => console.log("Works!")}
+            activeOpacity={0.7}
+          />}
+        centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff' } }}
+        
+        />,
         title: '',        
         headerTransparent:true
+
     }
 
     render(){
