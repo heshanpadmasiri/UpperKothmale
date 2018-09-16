@@ -9,7 +9,7 @@ export default class LandingPage extends React.Component{
 
     static navigationOptions = {
         header: props => <Header
-        leftComponent={<Avatar
+        rightComponent={<Avatar
             size="small"
             rounded
             source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
@@ -28,7 +28,7 @@ export default class LandingPage extends React.Component{
         return(
             <View style={commonStyles.container}>
                 <Card  containerStyle={styles.card}>
-                <Input
+                    <Input
                         inputContainerStyle={commonStyles.input_container}
                         containerStyle={commonStyles.input_field}
                         placeholder='Email'

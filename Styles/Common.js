@@ -6,15 +6,15 @@ export default commonStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
+        padding: 20
     },
     input_field:{
         backgroundColor: 'white',
         borderColor: 'black',
-        borderWidth: 3,
+        borderWidth: 1,
         borderRadius:10,
         paddingHorizontal: 11,
         marginVertical:15,
-        marginHorizontal:12
     },
     input_container:{
         borderBottomWidth:0
