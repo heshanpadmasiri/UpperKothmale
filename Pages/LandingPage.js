@@ -29,6 +29,7 @@ export default class LandingPage extends React.Component{
             <View style={commonStyles.container}>
                 <Card  containerStyle={styles.card}>
                 <Input
+                        inputContainerStyle={commonStyles.input_container}
                         containerStyle={commonStyles.input_field}
                         placeholder='Email'
                         leftIcon={
@@ -40,6 +41,7 @@ export default class LandingPage extends React.Component{
                         }
                     />
                     <Input
+                        inputContainerStyle={commonStyles.input_container}
                         containerStyle={commonStyles.input_field}
                         placeholder='Password'
                         leftIcon={
