@@ -10,10 +10,13 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import LandingPage from './Pages/LandingPage';
+import SignupPage from './Pages/SignupPage';
+
 
 const RootStack = createStackNavigator(
   {
-    LandingPage:LandingPage
+    LandingPage:LandingPage,
+    SignupPage:SignupPage
   },
   {
     initialRouteName: 'LandingPage'

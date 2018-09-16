@@ -65,7 +65,7 @@ export default class LandingPage extends React.Component{
                     </View>
                     
                     <Button buttonStyle={styles.loginButton}
-                        title="Log In"
+                        title="Log In"                        
                     />
                     
                 </Card>
@@ -76,6 +76,7 @@ export default class LandingPage extends React.Component{
                         color: 'white'
                       }}
                     title="Sign up"
+                    onPress={() => this.props.navigation.navigate('SignupPage')}
                     />
             </View>
         )        
