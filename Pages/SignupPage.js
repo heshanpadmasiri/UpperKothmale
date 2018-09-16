@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Picker } from 'react-native';
-import { Text, Header, Avatar, Input, ButtonGroup, CheckBox } from 'react-native-elements';
+import { Text, Header, Avatar, Input, Button, CheckBox } from 'react-native-elements';
 import commonStyles from '../Styles/Common';
 
 export default class SignupPage extends React.Component {
@@ -8,7 +8,9 @@ export default class SignupPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            genderSelect: true
+            genderSelect: true,
+            station:"station_1",
+            designation:"designation_1"
         }
         this.updateGender = this.updateGender.bind(this);
     }
@@ -91,21 +93,26 @@ export default class SignupPage extends React.Component {
                 </View>
                 <View style={styles.toggleButtonContainer}>
                 <Picker
-                    selectedValue={this.state.language}
+                    selectedValue={this.state.station}
                     style={styles.picker}    
-                    onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-                    <Picker.Item label="Designation_1" value="java" />
-                    <Picker.Item label="Designation_2" value="js" />
+                    prompt="Select station"
+                    onValueChange={(itemValue, itemIndex) => this.setState({station: itemValue})}>
+                    <Picker.Item label="Station 1" value="station_1" />
+                    <Picker.Item label="Station 2" value="station_2" />
                 </Picker>
                 <Picker
-                    selectedValue={this.state.language}
-                    style={styles.picker}
-                    onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-                    <Picker.Item label="Station_1" value="java" />
-                    <Picker.Item label="Station_2" value="js" />
+                    selectedValue={this.state.station}
+                    style={styles.picker}    
+                    prompt="Select designation"
+                    onValueChange={(itemValue, itemIndex) => this.setState({station: itemValue})}>
+                    
+                    <Picker.Item label="Designation_1" value="designation_1" />
+                    <Picker.Item label="Designation_2" value="designation_2" />
                 </Picker>
                 </View>
-                
+                <Button                     
+                    title="Submit"
+                />
             </View>
         )
     }
@@ -117,7 +124,7 @@ const styles = StyleSheet.create({
     },
     picker:{
         height:50,
-        width:125
+        width:150
     },
     toggleButton:{
         backgroundColor:'#F5FCFF',
