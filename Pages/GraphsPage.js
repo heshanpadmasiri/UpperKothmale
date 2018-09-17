@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, StyleSheet, Picker } from 'react-native';
-import { Text, Header, Avatar, Input, Button, CheckBox } from 'react-native-elements';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { Text, Header, Avatar } from 'react-native-elements';
 import commonStyles from '../Styles/Common';
+import { LineChart } from "react-native-chart-kit";
 
 export default class GraphsPage extends React.Component {
 
@@ -27,24 +28,54 @@ export default class GraphsPage extends React.Component {
     }
 
     render() {
+
+        const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+
         return (
             <View style={commonStyles.container}>
-                <Text>Graph page</Text>
+                <Text>
+    Bezier Line Chart
+  </Text>
+  <LineChart
+    data={{
+      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+      datasets: [{
+        data: [
+          Math.random() * 100,
+          Math.random() * 100,
+          Math.random() * 100,
+          Math.random() * 100,
+          Math.random() * 100,
+          Math.random() * 100
+        ]
+      }]
+    }}
+    width={Dimensions.get('window').width} // from react-native
+    height={220}
+    chartConfig={{
+      backgroundColor: '#e26a00',
+      backgroundGradientFrom: '#fb8c00',
+      backgroundGradientTo: '#ffa726',
+      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      style: {
+        borderRadius: 16
+      }
+    }}
+    bezier
+    style={{
+      marginVertical: 8,
+      borderRadius: 16
+    }}
+  />
             </View>
+            
         )
     }
 }
 
 const styles = StyleSheet.create({
-    toggleButtonContainer:{
-        flexDirection:'row'
-    },
-    picker:{
-        height:50,
-        width:150
-    },
-    toggleButton:{
-        backgroundColor:'#F5FCFF',
-        borderColor: '#F5FCFF'
+    graph:{
+        width:Dimensions.get('window').width-50,
+        height:200
     }
 });
