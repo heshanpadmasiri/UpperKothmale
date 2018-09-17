@@ -65,7 +65,8 @@ export default class LandingPage extends React.Component{
                     </View>
                     
                     <Button buttonStyle={styles.loginButton}
-                        title="Log In"                        
+                        title="Log In"  
+                        onPress={() => this.props.navigation.navigate('GraphsPage')}                      
                     />
                     
                 </Card>
