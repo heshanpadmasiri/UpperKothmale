@@ -5699,6 +5699,13 @@ react-native-chart-kit@^1.1.6:
     point-in-polygon "^1.0.1"
     react-native-scrollable-tab-view "^0.8.0"
 
+react-native-charts-wrapper@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/react-native-charts-wrapper/-/react-native-charts-wrapper-0.4.5.tgz#d0f28a1d076fc340353cd336f73f1c5656afdfad"
+  dependencies:
+    prop-types "^15.5.10"
+    react "16.1.1"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -6009,6 +6016,15 @@ react-vis@^1.10.4:
     hoek "4.2.1"
     prop-types "^15.5.8"
     react-motion "^0.5.2"
+
+react@16.1.1:
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.1.1.tgz#d5c4ef795507e3012282dd51261ff9c0e824fe1f"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 react@16.5.0:
   version "16.5.0"
