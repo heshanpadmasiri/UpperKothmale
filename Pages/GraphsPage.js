@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Text, Header, Avatar, Button, Slider} from 'react-native-elements';
+import { Text, Header, Avatar, ButtonGroup, Slider} from 'react-native-elements';
 import commonStyles from '../Styles/Common';
 import {LineChart} from 'react-native-charts-wrapper';
 
@@ -10,9 +10,11 @@ export default class GraphsPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data: [{y: 1}, {y: 2}, {y: 3}, {y: 4}, {y: 5}, {y: 1}, {y: 1}, {y: 2}, {y: 3}, {y: 5}, {y: 6}, {y: 1}]
+            data: [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}],
+            location:0
         }
         this.updateValues = this.updateValues.bind(this);
+        this.navigateOut = this.navigateOut.bind(this);
     }
 
     static navigationOptions = {
@@ -24,7 +26,7 @@ export default class GraphsPage extends React.Component {
             onPress={() => console.log("Works!")}
             activeOpacity={0.7}
           />}
-        centerComponent={<Text>Graphs</Text>}
+        centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff' } }}
         
         />,      
         headerTransparent:true
@@ -40,7 +42,6 @@ export default class GraphsPage extends React.Component {
     }
 
     updateValues(){
-        console.log('tt')
         const start = this.state.value * 4;
         const end = this.state.data.length - (4 - start);
         const values = this.state.data.slice(start,end);
@@ -49,11 +50,25 @@ export default class GraphsPage extends React.Component {
         })
     }
 
-    render() {
+    navigateOut(location){
+        if (location === 1) {
+            this.props.navigation.navigate('StatusPage');
+        } else if (location === 2){
+            this.props.navigation.navigate('TablePage');
+        }
+    }
 
+    render() {
+        const buttons = ['Graphs', 'Status', 'Report']
         return (
             <View style={{flex: 1}}>
                 <View style={styles.container}>
+                <ButtonGroup
+                    onPress={this.navigateOut}
+                    selectedIndex={this.state.location}
+                    buttons={buttons}
+                    containerStyle={{height: 25}}
+                />
                 <Slider
                     value={this.state.value}
                     onValueChange={(value) => {
@@ -62,15 +77,14 @@ export default class GraphsPage extends React.Component {
                     onSlidingComplete={this.updateValues}
                     maximumTrackTintColor={"#b3b3b3"}
                     minimumTrackTintColor={"#b3b3b3"}
-                    step={0.25}/>
-                <Text>Value: {this.state.value}</Text>
-                    <LineChart style={styles.chart}
-                        data={{dataSets:[{label: "demo", values: this.state.values}]}}
-                    />
-                    <Button
-                        title="Click"
-                        onPress={this.updateValues}
-                    />
+                    step={0.25}
+                />
+                
+                <LineChart style={styles.chart}
+                    data={{dataSets:[{label: "Station 1", values: this.state.values}]}}
+                    chartDescription={{text: 'Test'}}
+                />
+                    
                 </View>
             </View>
         )
@@ -80,7 +94,8 @@ export default class GraphsPage extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#F5FCFF',
+        padding:10
       },
       chart: {
         flex: 1
