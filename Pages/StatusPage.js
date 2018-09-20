@@ -1,17 +1,28 @@
 import React from 'react'
-import { View , Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import commonStyles from '../Styles/Common';
 import { Avatar, Header, ButtonGroup } from 'react-native-elements';
-import { Segment, Button, Container, Content } from 'native-base';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view'
 
+const FirstRoute = () => (
+  <View style={{backgroundColor: '#ff4081'}}></View>
+)
+const SecondRoute = () => (
+  <View style={{backgroundColor: '#673ab7'}}></View>
+)
 
 export default class StatusPage extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      location:1
-    }
+      location:1,
+      index: 0,
+      routes: [
+        {key: 'first', title: 'First'},
+        {key: 'second', title: 'Second'}
+      ]
+    };
     this.navigateOut = this.navigateOut.bind(this);
   }
 
@@ -50,22 +61,15 @@ export default class StatusPage extends React.Component {
                     buttons={buttons}
                     containerStyle={{height: 25}}
           />
-        <Container>    
-          <Segment>
-            <Button first>
-              <Text>Test</Text>
-            </Button>
-            <Button>
-              <Text>T2</Text>
-            </Button>
-            <Button last>
-              <Text>T3</Text>
-            </Button>
-          </Segment>    
-          <Content padder>
-
-          </Content>
-        </Container>
+        <TabView
+          navigationState={this.state}
+          renderScene={SceneMap({
+            first: FirstRoute,
+            second: SecondRoute
+          })}
+          onIndexChange={index => this.setState({index})}
+          initialLayout={{width: Dimensions.get('window').width}}
+        />
       </View>
       
     )
