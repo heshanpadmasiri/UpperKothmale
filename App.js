@@ -12,13 +12,17 @@ import { createStackNavigator } from 'react-navigation';
 import LandingPage from './Pages/LandingPage';
 import SignupPage from './Pages/SignupPage';
 import GraphsPage from './Pages/GraphsPage';
+import TablePage from './Pages/TablePage';
+import StatusPage from './Pages/StatusPage';
 
 
 const RootStack = createStackNavigator(
   {
     LandingPage:LandingPage,
     SignupPage:SignupPage,
-    GraphsPage:GraphsPage
+    GraphsPage:GraphsPage,
+    TablePage:TablePage,
+    StatusPage:StatusPage
   },
   {
     initialRouteName: 'LandingPage'
