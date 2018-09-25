@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, processColor } from 'react-native';
 import { Text, Header, Avatar, ButtonGroup, Slider} from 'react-native-elements';
 import commonStyles from '../Styles/Common';
 import {LineChart} from 'react-native-charts-wrapper';
@@ -11,7 +11,7 @@ export default class GraphsPage extends React.Component {
         super(props);
         this.state = {
             data: [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}],
-            location:0
+            location:0            
         }
         this.updateValues = this.updateValues.bind(this);
         this.navigateOut = this.navigateOut.bind(this);
@@ -19,6 +19,7 @@ export default class GraphsPage extends React.Component {
 
     static navigationOptions = {
         header: props => <Header
+        backgroundColor="#D3CDBD"
         rightComponent={<Avatar
             size="small"
             rounded
@@ -67,6 +68,15 @@ export default class GraphsPage extends React.Component {
                     onPress={this.navigateOut}
                     selectedIndex={this.state.location}
                     buttons={buttons}
+                    textStyle={{
+                        color:"9BA0A8"
+                    }}
+                    buttonStyle={{
+                        backgroundColor:"#F1F3F6"
+                    }}
+                    selectedButtonStyle={{
+                        backgroundColor:"#D8DCE5"
+                    }}
                     containerStyle={{height: 25}}
                 />
                 <Slider
@@ -81,8 +91,39 @@ export default class GraphsPage extends React.Component {
                 />
                 
                 <LineChart style={styles.chart}
-                    data={{dataSets:[{label: "Station 1", values: this.state.values}]}}
+                    data={{
+                        dataSets:[
+                            {label: "Station 1", 
+                            values: this.state.values,
+                            config:{
+                                lineWidth: 4,
+                                drawFilled: true,
+                                color: processColor('red'),
+                                fillColor: processColor('red')
+                                valueTextSize: 15
+                            }
+                            }]
+                        }}
                     chartDescription={{text: 'Test'}}
+  
+                />
+                <LineChart style={styles.chart}
+                    data={{
+                        dataSets:[
+                            {label: "Station 1", 
+                            values: this.state.values,
+                            config:{
+                                lineWidth: 4,
+                                drawFilled: true,
+                                color: processColor('red'),
+                                fillColor: processColor('red'),
+                                fillAlpha: 60,
+                                valueTextSize: 15
+                            }
+                            }]
+                        }}
+                    chartDescription={{text: 'Test'}}
+  
                 />
                     
                 </View>
@@ -94,7 +135,7 @@ export default class GraphsPage extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#D3CDBD',
         padding:10
       },
       chart: {
