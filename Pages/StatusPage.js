@@ -88,9 +88,25 @@ export default class StatusPage extends React.Component {
           source={{uri:'https://via.placeholder.com/200x325'}}
         >
           {popupVisible ? (
-            <View style={{backgroundColor:'red',position:'absolute', top:0, left:0, right:0, bottom:0,justifyContent:'center',alignItems:'center', width:70,height:70}}>
-              <Text>Test</Text>
-              <Text>Test2</Text>
+            <View style={styles.popUp}>
+              <View style={{backgroundColor:'#ff6633', alignItems:'center'}}>
+                <Text>Station 1</Text>
+              </View>
+              <View style={{
+                flexDirection:'row',
+                justifyContent:'space-evenly'
+              }}>
+                <Text>Water Level</Text>
+                <Text>12</Text>
+              </View>
+              <View style={{
+                flexDirection:'row',
+                justifyContent:'space-evenly'
+              }}>
+                <Text>Flow Volume</Text>
+                <Text>12</Text>
+              </View>
+              
             </View>
           ):(<View></View>)}
           
@@ -283,6 +299,18 @@ const styles = StyleSheet.create({
   },
   line:{
     flexDirection:"row",justifyContent:"space-evenly", backgroundColor:"#e0dcd1"
-  }
+  },
+  popUp:{
+    borderRadius:10,
+    backgroundColor:'#992600',
+    position:'absolute', 
+    top:20, 
+    left:30, 
+    right:0, 
+    bottom:0,
+    justifyContent:'space-evenly',
+    alignItems:'stretch', 
+    width:120,
+    height:95}
 
 });
