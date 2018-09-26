@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions, Image } from 'react-native';
+import { View, StyleSheet, ImageBackground, Image } from 'react-native';
 import commonStyles from '../Styles/Common';
-import { Tab, Tabs, TabHeading,Icon } from 'native-base'
+import { Tab, Tabs, TabHeading, Card } from 'native-base'
 import { Avatar, Header, Button, Text} from 'react-native-elements';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view'
 
@@ -17,6 +17,7 @@ export default class StatusPage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      popupVisible:false,
       location:1,
       index: 0,
       routes: [
@@ -54,11 +55,11 @@ export default class StatusPage extends React.Component {
     
     />,      
     headerTransparent:true
-
 }
 
   render() {
     const buttons = ['Graphs', 'Status', 'Report']
+    const popupVisible = this.state.popupVisible;
     return (
       <View style={{flex: 1}}>
         <View style={styles.container}>
@@ -82,15 +83,26 @@ export default class StatusPage extends React.Component {
                 title="Report"
             />
         </View>
-        <Image
+        <ImageBackground
           style={{width:325,height:200,marginVertical:5}}
           source={{uri:'https://via.placeholder.com/200x325'}}
-        />
+        >
+          {popupVisible ? (
+            <View style={{backgroundColor:'red',position:'absolute', top:0, left:0, right:0, bottom:0,justifyContent:'center',alignItems:'center', width:70,height:70}}>
+              <Text>Test</Text>
+              <Text>Test2</Text>
+            </View>
+          ):(<View></View>)}
+          
+        </ImageBackground>
         <View style={{flexDirection:"row",justifyContent:"space-evenly", marginVertical:5}}>
             <Button buttonStyle={styles.ennabledButton}  
                 titleStyle={styles.buttonText}                      
                 containerStyle={styles.buttonContainer} 
-                title="Station 1"                
+                title="Station 1"       
+                onPress={()=> {
+                  this.setState({popupVisible:!this.state.popupVisible})
+                }}         
             />
             <Button buttonStyle={styles.ennabledButton}
                 titleStyle={styles.buttonText} 
