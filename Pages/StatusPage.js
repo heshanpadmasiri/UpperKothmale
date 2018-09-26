@@ -208,33 +208,33 @@ export default class StatusPage extends React.Component {
             </Tab>
           </Tabs>
         </View>
-        <View style={{height:150}}>
+        <View style={{height:145}}>
           <Tabs >
             <Tab heading={<TabHeading style={styles.tabBar}>
                           <Text style={{color: '#ffffff'}}>Station2</Text>
                         </TabHeading>}>
 
-              <View style={{flexDirection:"row",justifyContent:"space-evenly"}} >
+              <View style={styles.line} >
                 <Text>WSS</Text>
                 <Text>TX1USE</Text>
                 <Text>Communication</Text>
               </View>
-              <View style={{flexDirection:"row",justifyContent:"space-evenly"}} >
+              <View style={styles.line} >
                 <Text>WSS</Text>
                 <Text>TX1USE</Text>
                 <Text>Communication</Text>
               </View>
-              <View style={{flexDirection:"row",justifyContent:"space-evenly"}} >
+              <View style={styles.line} >
                 <Text>WSS</Text>
                 <Text>TX1USE</Text>
                 <Text>Communication</Text>
               </View>
-              <View style={{flexDirection:"row",justifyContent:"space-evenly"}} >
+              <View style={styles.line} >
                 <Text>WSS</Text>
                 <Text>TX1USE</Text>
                 <Text>Communication</Text>
               </View>
-              <View style={{flexDirection:"row",justifyContent:"space-evenly"}} >
+              <View style={styles.line} >
                 <Text>WSS</Text>
                 <Text>TX1USE</Text>
                 <Text>Communication</Text>
