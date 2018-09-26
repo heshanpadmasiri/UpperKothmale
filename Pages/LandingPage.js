@@ -9,19 +9,13 @@ export default class LandingPage extends React.Component{
 
     static navigationOptions = {
         header: props => <Header
-        rightComponent={<Avatar
-            size="small"
-            rounded
-            source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
-            onPress={() => console.log("Works!")}
-            activeOpacity={0.7}
-          />}
+        backgroundColor="#D3CDBD"
+        
         centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff' } }}
         
-        />,
-        title: '',        
+        />,      
         headerTransparent:true
-
+    
     }
 
     render(){
@@ -89,7 +83,8 @@ const styles = StyleSheet.create({
         height:300,
         width:300,
         borderRadius:10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor:'#e0dcd1'
     },
     rememberMeContainer:{
         flexDirection: 'row',

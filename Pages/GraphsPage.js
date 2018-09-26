@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions, processColor } from 'react-native';
-import { Text, Header, Avatar, ButtonGroup, Slider} from 'react-native-elements';
+import { Text, Header, Avatar, CheckBox, Slider, Button} from 'react-native-elements';
 import commonStyles from '../Styles/Common';
 import {LineChart} from 'react-native-charts-wrapper';
 
@@ -15,6 +15,7 @@ export default class GraphsPage extends React.Component {
         }
         this.updateValues = this.updateValues.bind(this);
         this.navigateOut = this.navigateOut.bind(this);
+        this._goToStatusPage = this._goToStatusPage.bind(this);
     }
 
     static navigationOptions = {
@@ -51,6 +52,10 @@ export default class GraphsPage extends React.Component {
         })
     }
 
+    _goToStatusPage(){
+        this.props.navigation.navigate('StatusPage');
+    }
+
     navigateOut(location){
         if (location === 1) {
             this.props.navigation.navigate('StatusPage');
@@ -64,21 +69,59 @@ export default class GraphsPage extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <View style={styles.container}>
-                <ButtonGroup
-                    onPress={this.navigateOut}
-                    selectedIndex={this.state.location}
-                    buttons={buttons}
-                    textStyle={{
-                        color:"9BA0A8"
-                    }}
-                    buttonStyle={{
-                        backgroundColor:"#F1F3F6"
-                    }}
-                    selectedButtonStyle={{
-                        backgroundColor:"#D8DCE5"
-                    }}
-                    containerStyle={{height: 25}}
-                />
+                <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
+                    <Button buttonStyle={styles.dissableButton}  
+                        titleStyle={styles.buttonText}                      
+                        containerStyle={styles.buttonContainer} 
+                        title="Graphs"
+                    />
+                    <Button buttonStyle={styles.ennabledButton}
+                        titleStyle={styles.buttonText} 
+                        containerStyle={styles.buttonContainer}
+                        onPress={() => {
+                            this._goToStatusPage()
+                        }}
+                        title="Status"
+                    />
+                    <Button buttonStyle={styles.ennabledButton}
+                        containerStyle={styles.buttonContainer}
+                        titleStyle={styles.buttonText} 
+                        title="Report"
+                    />
+                </View>
+                <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
+                    <CheckBox
+                        center
+                        title='Month'
+                        textStyle={styles.buttonText}
+                        checkedIcon='dot-circle-o'
+                        uncheckedIcon='circle-o'
+                        checked={this.state.genderSelect}
+                        onPress={this.updateGender}
+                        containerStyle={styles.toggleButton}
+                    />
+                    <CheckBox
+                        center
+                        title='Year'
+                        textStyle={styles.buttonText}
+                        checkedIcon='dot-circle-o'
+                        uncheckedIcon='circle-o'
+                        checked={this.state.genderSelect}
+                        onPress={this.updateGender}
+                        containerStyle={styles.toggleButton}
+                    />
+                    <CheckBox
+                        center
+                        title='Day'
+                        textStyle={styles.buttonText}
+                        checkedIcon='dot-circle-o'
+                        uncheckedIcon='circle-o'
+                        checked={this.state.genderSelect}
+                        onPress={this.updateGender}
+                        containerStyle={styles.toggleButton}
+                    />
+                </View>
+
                 <Slider
                     value={this.state.value}
                     onValueChange={(value) => {
@@ -99,7 +142,7 @@ export default class GraphsPage extends React.Component {
                                 lineWidth: 4,
                                 drawFilled: true,
                                 color: processColor('red'),
-                                fillColor: processColor('red')
+                                fillColor: processColor('red'),
                                 valueTextSize: 15
                             }
                             }]
@@ -137,8 +180,27 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#D3CDBD',
         padding:10
-      },
-      chart: {
+    },
+    chart: {
         flex: 1
-      }
+    },
+    buttonText:{
+        color: '#9BA0A8'
+    },
+    buttonContainer:{
+        backgroundColor: '#D3CDBD'
+    },
+    ennabledButton: {
+        backgroundColor:'#F1F3F6',
+        borderRadius:10
+    },
+    dissableButton: {
+        backgroundColor:'#D8DCE5',
+        borderRadius:10
+    },
+    toggleButton:{
+        backgroundColor:'#D3CDBD',
+        borderColor: '#D3CDBD'
+    }
+
 });

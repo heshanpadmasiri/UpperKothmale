@@ -5,7 +5,7 @@ export default commonStyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#D3CDBD',
         padding: 20
     },
     input_field:{
