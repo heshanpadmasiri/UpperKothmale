@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions, processColor } from 'react-native';
+import { View, StyleSheet, Dimensions, processColor, FlatList } from 'react-native';
 import { Text, Header, Avatar, CheckBox, Slider, Button} from 'react-native-elements';
 import commonStyles from '../Styles/Common';
 import {LineChart} from 'react-native-charts-wrapper';
@@ -10,7 +10,7 @@ export default class GraphsPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data: [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}],
+            data: [[{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}]],
             location:0            
         }
         this.updateValues = this.updateValues.bind(this);
@@ -45,26 +45,40 @@ export default class GraphsPage extends React.Component {
     }
 
     componentWillMount(){
-        const end = this.state.data.length - 4;
-        const values = this.state.data.slice(0,end);
+        values = []
+        for (let i = 0; i < this.state.data.length; i++) {
+            const dataElement = this.state.data[i];
+            const end = dataElement.length - 4;
+            const temp = dataElement.slice(0,end);
+            values.push(temp)
+        }
+        console.log(values)
         this.setState({
             values: values
         })
     }
 
     updateValues(){
-        
-        const start = Math.round(this.state.value * 4);
+        console.log('tx')
 
-        const end = this.state.data.length - (4 - start);
-        const values = this.state.data.slice(start,end);
+        values = []
+        for (let i = 0; i < this.state.data.length; i++) {
+            const dataElement = this.state.data[i];
+            const start = Math.round(this.state.value * 4);
 
-        if (values.length >= 1){
-            this.setState({
-                values: values
-            })
+            const end = dataElement.length - (4 - start);
+            const temp = dataElement.slice(start,end);
+            if(temp.length < 1){
+                return;
+            }
+            values.push(temp);
+            
         }
         
+        this.setState({
+            values: values
+        });
+        console.log(this.state)
     }
 
     _goToStatusPage(){
@@ -141,7 +155,6 @@ export default class GraphsPage extends React.Component {
                     value={this.state.value}
                     onValueChange={(value) => {
                         this.setState({value});   
-                        console.log('tt')
                         this.updateValues();                     
                     }} 
                     
@@ -149,27 +162,33 @@ export default class GraphsPage extends React.Component {
                     minimumTrackTintColor={"#b3b3b3"}
                     step={0.25}
                 />
-                
-                <LineChart style={styles.chart}
-                    data={{
-                        dataSets:[
-                            {label: "Station 1", 
-                            values: this.state.values,
-                            config:{
-                                lineWidth: 2,
-                                drawFilled: true,
-                                color: processColor('red'),
-                                fillColor: processColor('red'),
-                                valueTextSize: 10,
-                                drawCircles: true,
-                                circleColor: processColor('yellow'),
-                                drawCircleHole: false
-                            }
-                            }]
-                        }}
-                    chartDescription={{text: 'Test'}}
-  
-                />                    
+                <FlatList 
+                    data={this.state.values}
+                    extraData={this.state}
+                    renderItem={({item}) => (
+                        <LineChart style={styles.chart}
+                            data={{
+                                dataSets:[
+                                    {label: "Station 1", 
+                                    values: item,
+                                    config:{
+                                        lineWidth: 2,
+                                        drawFilled: true,
+                                        color: processColor('red'),
+                                        fillColor: processColor('red'),
+                                        valueTextSize: 10,
+                                        drawCircles: true,
+                                        circleColor: processColor('yellow'),
+                                        drawCircleHole: false
+                                    }
+                                    }]
+                                }}
+                            chartDescription={{text: 'Test'}}
+        
+                        />          
+                    )}
+                />
+                          
                 </View>
             </View>
         )
