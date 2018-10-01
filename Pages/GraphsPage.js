@@ -53,12 +53,22 @@ export default class GraphsPage extends React.Component {
     }
 
     updateValues(){
-        const start = this.state.value * 4;
+        console.log('tx')
+        
+        const start = Math.round(this.state.value * 4);
+
         const end = this.state.data.length - (4 - start);
+        console.log(start)
+        console.log(end)
+
         const values = this.state.data.slice(start,end);
-        this.setState({
-            values: values
-        })
+        console.log(values)
+        if (values.length >= 1){
+            this.setState({
+                values: values
+            })
+        }
+        
     }
 
     _goToStatusPage(){
@@ -134,9 +144,11 @@ export default class GraphsPage extends React.Component {
                 <Slider
                     value={this.state.value}
                     onValueChange={(value) => {
-                        this.setState({value});                        
+                        this.setState({value});   
+                        console.log('tt')
+                        this.updateValues();                     
                     }} 
-                    onSlidingComplete={this.updateValues}
+                    
                     maximumTrackTintColor={"#b3b3b3"}
                     minimumTrackTintColor={"#b3b3b3"}
                     step={0.25}
