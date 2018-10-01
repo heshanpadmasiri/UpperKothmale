@@ -148,11 +148,14 @@ export default class GraphsPage extends React.Component {
                             {label: "Station 1", 
                             values: this.state.values,
                             config:{
-                                lineWidth: 4,
+                                lineWidth: 2,
                                 drawFilled: true,
                                 color: processColor('red'),
                                 fillColor: processColor('red'),
-                                valueTextSize: 15
+                                valueTextSize: 10,
+                                drawCircles: true,
+                                circleColor: processColor('yellow'),
+                                drawCircleHole: false
                             }
                             }]
                         }}
@@ -165,12 +168,14 @@ export default class GraphsPage extends React.Component {
                             {label: "Station 1", 
                             values: this.state.values,
                             config:{
-                                lineWidth: 4,
+                                lineWidth: 2,
                                 drawFilled: true,
                                 color: processColor('red'),
                                 fillColor: processColor('red'),
-                                fillAlpha: 60,
-                                valueTextSize: 15
+                                valueTextSize: 10,
+                                drawCircles: true,
+                                circleColor: processColor('yellow'),
+                                drawCircleHole: false
                             }
                             }]
                         }}
