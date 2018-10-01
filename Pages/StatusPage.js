@@ -44,6 +44,15 @@ export default class StatusPage extends React.Component {
   static navigationOptions = {
     header: props => <Header
     backgroundColor="#D3CDBD"
+    leftComponent={<Avatar
+      size="small"
+      rounded
+      source={require('../assets/imgs/ceb_logo.jpeg')}
+      onPress={() => console.log("Works!")}
+      activeOpacity={0.7}
+    />
+
+  }
     rightComponent={<Avatar
         size="small"
         rounded
