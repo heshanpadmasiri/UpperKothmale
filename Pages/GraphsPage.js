@@ -53,16 +53,12 @@ export default class GraphsPage extends React.Component {
     }
 
     updateValues(){
-        console.log('tx')
         
         const start = Math.round(this.state.value * 4);
 
         const end = this.state.data.length - (4 - start);
-        console.log(start)
-        console.log(end)
-
         const values = this.state.data.slice(start,end);
-        console.log(values)
+
         if (values.length >= 1){
             this.setState({
                 values: values
@@ -173,28 +169,7 @@ export default class GraphsPage extends React.Component {
                         }}
                     chartDescription={{text: 'Test'}}
   
-                />
-                <LineChart style={styles.chart}
-                    data={{
-                        dataSets:[
-                            {label: "Station 1", 
-                            values: this.state.values,
-                            config:{
-                                lineWidth: 2,
-                                drawFilled: true,
-                                color: processColor('red'),
-                                fillColor: processColor('red'),
-                                valueTextSize: 10,
-                                drawCircles: true,
-                                circleColor: processColor('yellow'),
-                                drawCircleHole: false
-                            }
-                            }]
-                        }}
-                    chartDescription={{text: 'Test'}}
-  
-                />
-                    
+                />                    
                 </View>
             </View>
         )
@@ -208,7 +183,8 @@ const styles = StyleSheet.create({
         padding:10
     },
     chart: {
-        flex: 1
+        width: Dimensions.get.width,
+        height: 350
     },
     buttonText:{
         color: '#9BA0A8'
