@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, StyleSheet, ImageBackground, Image, FlatList } from 'react-native';
 import commonStyles from '../Styles/Common';
 import { Tab, Tabs, TabHeading, Card } from 'native-base'
-import { Avatar, Header, Button, Text} from 'react-native-elements';
+import { Avatar, Header, Button, Text, ButtonGroup} from 'react-native-elements';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view'
 
 const FirstRoute = () => (
@@ -17,7 +17,9 @@ export default class StatusPage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      data:[true,true,true],
       popupVisible:false,
+      selectedIndexs:[0],
       location:1,
       index: 0,
       routes: [
@@ -67,7 +69,8 @@ export default class StatusPage extends React.Component {
 }
 
   render() {
-    const buttons = ['Graphs', 'Status', 'Report']
+    const buttons = ['Station 1', 'Station 2', 'Station 3','Station 4']
+    const secondRow = ['Station 5', 'Station 6', 'Station 7','Station 8']
     const popupVisible = this.state.popupVisible;
     return (
       <View style={{flex: 1}}>
@@ -120,54 +123,45 @@ export default class StatusPage extends React.Component {
           ):(<View></View>)}
           
         </ImageBackground>
+
         <View style={{flexDirection:"row",justifyContent:"space-evenly", marginVertical:5}}>
             <Button buttonStyle={styles.ennabledButton}  
                 titleStyle={styles.buttonText}                      
                 containerStyle={styles.buttonContainer} 
-                title="Station 1"       
-                onPress={()=> {
-                  this.setState({popupVisible:!this.state.popupVisible})
-                }}         
+                title="Data"                
             />
-            <Button buttonStyle={styles.ennabledButton}
-                titleStyle={styles.buttonText} 
-                containerStyle={styles.buttonContainer}                
-                title="Station 2"
-            />
-            <Button buttonStyle={styles.ennabledButton}
-                containerStyle={styles.buttonContainer}
-                titleStyle={styles.buttonText} 
-                title="Station 3"
-            />
+            
             <Button buttonStyle={styles.ennabledButton}  
                 titleStyle={styles.buttonText}                      
                 containerStyle={styles.buttonContainer} 
-                title="Station 4"                
+                title="Status"                
             />            
         </View>
-        <View style={{flexDirection:"row",justifyContent:"space-evenly", marginVertical:5}}>
-            <Button buttonStyle={styles.ennabledButton}  
-                titleStyle={styles.buttonText}                      
-                containerStyle={styles.buttonContainer} 
-                title="Station 5"                
-            />
-            <Button buttonStyle={styles.ennabledButton}
-                titleStyle={styles.buttonText} 
-                containerStyle={styles.buttonContainer}                
-                title="Station 6"
-            />
-            <Button buttonStyle={styles.ennabledButton}
-                containerStyle={styles.buttonContainer}
-                titleStyle={styles.buttonText} 
-                title="Station 7"
-            />
-            <Button buttonStyle={styles.ennabledButton}  
-                titleStyle={styles.buttonText}                      
-                containerStyle={styles.buttonContainer} 
-                title="Station 8"                
-            />            
-        </View>
-        <View style={{height:145}}>
+        <ButtonGroup
+          onPress={(index)=>{
+            this.setState({popupVisible:!this.state.popupVisible})
+          }}
+          selectedIndexes={this.state.selectedIndexs}
+          buttons={buttons}
+          selectMultiple={true}
+          selectedButtonStyle={styles.ButtonGroupSelected}
+          containerStyle={styles.buttonGroupContainer}
+        />
+        <ButtonGroup
+          onPress={(index)=>{
+            this.setState({popupVisible:!this.state.popupVisible})
+          }}
+          selectedIndexes={this.state.selectedIndexs}
+          buttons={secondRow}
+          selectMultiple={true}
+          selectedButtonStyle={styles.ButtonGroupSelected}
+          containerStyle={styles.buttonGroupContainer}
+        />
+        <FlatList
+          data={this.state.data}
+          extraData={this.state}
+          renderItem={({item}) => (
+            <View style={{height:145}}>
           <Tabs >
             <Tab heading={<TabHeading style={styles.tabBar}>
                           <Text style={{color: '#ffffff'}}>Station1</Text>
@@ -217,61 +211,11 @@ export default class StatusPage extends React.Component {
             </Tab>
           </Tabs>
         </View>
-        <View style={{height:145}}>
-          <Tabs >
-            <Tab heading={<TabHeading style={styles.tabBar}>
-                          <Text style={{color: '#ffffff'}}>Station2</Text>
-                        </TabHeading>}>
-
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-            </Tab>
-            <Tab 
-                heading={<TabHeading style={styles.tabBar}>
-                          <Text style={{color: '#ffffff'}}>Notifications</Text>
-                        </TabHeading>}>
-                
-            </Tab>
-            <Tab heading={<TabHeading style={styles.tabBar}>
-                          <Text style={{color: '#ffffff'}}>Information</Text>
-                        </TabHeading>}>
-                
-            </Tab>
-            <Tab heading={<TabHeading style={styles.tabBar}>
-                          <Text style={{color: '#ffffff'}}>Gauge type</Text>
-                        </TabHeading>}>
-                
-            </Tab>
-          </Tabs>
-        </View>
         
+          )}
+        />
         </View>
-        
       </View>
-      
     )
   }
 }
@@ -293,11 +237,13 @@ const styles = StyleSheet.create({
   },
   ennabledButton: {
       backgroundColor:'#F1F3F6',
-      borderRadius:10
+      borderRadius:10,
+      width:80
   },
   dissableButton: {
       backgroundColor:'#D8DCE5',
-      borderRadius:10
+      borderRadius:10,
+      width:80
   },
   toggleButton:{
       backgroundColor:'#D3CDBD',
@@ -308,6 +254,13 @@ const styles = StyleSheet.create({
   },
   line:{
     flexDirection:"row",justifyContent:"space-evenly", backgroundColor:"#e0dcd1"
+  },
+  buttonGroupContainer:{
+    backgroundColor:'#F1F3F6',
+    borderRadius:10
+  },
+  ButtonGroupSelected:{
+    backgroundColor:'#D8DCE5',
   },
   popUp:{
     borderRadius:10,
@@ -321,5 +274,4 @@ const styles = StyleSheet.create({
     alignItems:'stretch', 
     width:120,
     height:95}
-
 });
