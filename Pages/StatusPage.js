@@ -62,7 +62,8 @@ export default class StatusPage extends React.Component {
         onPress={() => console.log("Works!")}
         activeOpacity={0.7}
       />}
-    centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff' } }}
+    centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff',
+    fontFamily:'OpenSans' } }}
     
     />,      
     headerTransparent:true
@@ -230,7 +231,8 @@ const styles = StyleSheet.create({
       flex: 1
   },
   buttonText:{
-      color: '#9BA0A8'
+      color: '#9BA0A8',
+      fontFamily:'OpenSans'
   },
   buttonContainer:{
       backgroundColor: '#D3CDBD'
@@ -253,7 +255,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#D3CDBD'
   },
   line:{
-    flexDirection:"row",justifyContent:"space-evenly", backgroundColor:"#e0dcd1"
+    flexDirection:"row",justifyContent:"space-evenly", backgroundColor:"#e0dcd1",
+    fontFamily:'OpenSans'
   },
   buttonGroupContainer:{
     backgroundColor:'#F1F3F6',

@@ -42,7 +42,7 @@ export default class GraphsPage extends React.Component {
             onPress={() => console.log("Works!")}
             activeOpacity={0.7}
           />}
-        centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff' } }}
+        centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff',fontFamily:'OpenSans'  } }}
         
         />,      
         headerTransparent:true
