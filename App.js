@@ -15,6 +15,20 @@ import GraphsPage from './Pages/GraphsPage';
 import TablePage from './Pages/TablePage';
 import StatusPage from './Pages/StatusPage';
 
+import { createStore, applyMiddleware } from 'redux';
+import { Provider, connect } from 'react-redux';
+import axios from 'axios';
+import axiosMiddleware from 'redux-axios-middleware';
+
+import reducer from './States/reducer';
+
+//todo: change this to the public ip the server
+const client = axios.create({
+  baseURL: 'https://192.168.1.103:8081'
+});
+
+const store = createStore(reducer,applyMiddleware(axiosMiddleware(client)));
+
 
 const RootStack = createStackNavigator(
   {
@@ -33,7 +47,9 @@ type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
-      <RootStack/>
+      <Provider store={store}>
+        <RootStack/>
+      </Provider>
     );
   }
 }

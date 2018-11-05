@@ -3,9 +3,11 @@ import { View, StyleSheet, Dimensions, processColor, FlatList } from 'react-nati
 import { Text, Header, Avatar, CheckBox, Slider, Button} from 'react-native-elements';
 import commonStyles from '../Styles/Common';
 import {LineChart} from 'react-native-charts-wrapper';
+import { connect } from 'react-redux';
+import { getRainFall} from '../States/reducer';
+import { Graph } from 'graphlib';
 
-
-export default class GraphsPage extends React.Component {
+export class GraphsPage extends React.Component {
 
     constructor(props){
         super(props);
@@ -57,15 +59,17 @@ export default class GraphsPage extends React.Component {
             const temp = dataElement.slice(0,end);
             values.push(temp)
         }
-        console.log(values)
+        
         this.setState({
             values: values
         })
     }
 
-    updateValues(){
-        console.log('tx')
+    componentDidMount(){
+        this.props.getRainFall();
+    }
 
+    updateValues(){
         values = []
         for (let i = 0; i < this.state.data.length; i++) {
             const dataElement = this.state.data[i];
@@ -230,3 +234,17 @@ const styles = StyleSheet.create({
     }
 
 });
+
+const mapSateToProps = state => {
+    console.log(state)
+    let rainFallData = state.rainfall.map(station => ({key:station.id, ...station}));
+    return {
+        rainFallData:rainFallData
+    };
+};
+
+const mapDispatchToProps = {
+    getRainFall
+};
+
+export default connect(mapSateToProps, mapDispatchToProps)(GraphsPage);
