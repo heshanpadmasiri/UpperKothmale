@@ -53,16 +53,26 @@ export class GraphsPage extends React.Component {
 
     componentWillMount(){
         values = []
-        for (let i = 0; i < this.state.data.length; i++) {
-            const dataElement = this.state.data[i];
-            const end = dataElement.length - 4;
-            const temp = dataElement.slice(0,end);
-            values.push(temp)
+        for (let i = 0; i < this.props.stations.length; i++) {
+            const ref = this.props.rainFallData[i];
+            const dataElement = ref.value;
+            const start = 0;
+            const end = dataElement.length - (25 - start);
+            const temp = dataElement.slice(start,end);
+            if(temp.length < 1){
+                return;
+            }
+            values.push({
+                key: ref.key,
+                value: temp,
+                name:ref.name
+            });
+            
         }
         
         this.setState({
             values: values
-        })
+        });
     }
 
     componentDidMount(){
@@ -70,23 +80,30 @@ export class GraphsPage extends React.Component {
     }
 
     updateValues(){
+
         values = []
-        for (let i = 0; i < this.state.data.length; i++) {
-            const dataElement = this.state.data[i];
+        for (let i = 0; i < this.props.stations.length; i++) {
+            const ref = this.props.rainFallData[i];
+            const dataElement = ref.value;
             const start = Math.round(this.state.value * 4);
 
-            const end = dataElement.length - (4 - start);
+            const end = dataElement.length - (25 - start);
             const temp = dataElement.slice(start,end);
             if(temp.length < 1){
                 return;
             }
-            values.push(temp);
+            values.push({
+                key: ref.key,
+                value: temp,
+                name:ref.name
+            });
             
         }
         
         this.setState({
             values: values
         });
+        console.log(this.state);
     }
 
     _goToStatusPage(){
@@ -102,8 +119,6 @@ export class GraphsPage extends React.Component {
     }
 
     render() {
-        console.log(this.props.rainFallData)
-
         const buttons = ['Graphs', 'Status', 'Report']
         return (
             <View style={{flex: 1}}>
@@ -174,7 +189,7 @@ export class GraphsPage extends React.Component {
                 />
 
                 <FlatList 
-                    data={this.props.rainFallData}
+                    data={this.state.values}
                     extraData={this.state}
                     renderItem={({item}) => (
                         
