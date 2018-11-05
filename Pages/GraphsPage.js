@@ -87,7 +87,6 @@ export class GraphsPage extends React.Component {
         this.setState({
             values: values
         });
-        console.log(this.state)
     }
 
     _goToStatusPage(){
@@ -103,6 +102,8 @@ export class GraphsPage extends React.Component {
     }
 
     render() {
+        console.log(this.props.rainFallData)
+
         const buttons = ['Graphs', 'Status', 'Report']
         return (
             <View style={{flex: 1}}>
@@ -171,15 +172,17 @@ export class GraphsPage extends React.Component {
                     minimumTrackTintColor={"#b3b3b3"}
                     step={0.25}
                 />
+
                 <FlatList 
-                    data={this.state.values}
+                    data={this.props.rainFallData}
                     extraData={this.state}
                     renderItem={({item}) => (
+                        
                         <LineChart style={styles.chart}
                             data={{
                                 dataSets:[
-                                    {label: "Station 1", 
-                                    values: item,
+                                    {label:item.name, 
+                                    values: item.value,
                                     config:{
                                         lineWidth: 2,
                                         drawFilled: true,
@@ -236,10 +239,28 @@ const styles = StyleSheet.create({
 });
 
 const mapSateToProps = state => {
-    console.log(state)
-    let rainFallData = state.rainfall.map(station => ({key:station.id, ...station}));
+    const rainfallRecord = state.rainfall;
+    console.log('ttt',state.rainfall);
+    station_ids = Object.keys(rainfallRecord);
+    var rainFallData = [];
+    for (let i = 0; i < station_ids.length; i++) {
+        const id = station_ids[i];
+        var rainfalls = rainfallRecord[id].rainfall;
+        var name = rainfallRecord[id].station_name;
+        var record = []
+        for (let index = 0; index < rainfalls.length; index++) {
+            const data = rainfalls[index];
+            record.push(Math.max(data.rfd_crfValue,0));
+        }
+        rainFallData.push({
+            key:id,
+            value:record,
+            name:name
+        });
+    }
     return {
-        rainFallData:rainFallData
+        rainFallData:rainFallData,
+        stations:station_ids
     };
 };
 

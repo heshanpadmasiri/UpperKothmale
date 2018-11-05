@@ -11,7 +11,6 @@ const initialState = {
 
 export default function reducer (state = initialState, action){
   switch (action.type) {
-
     case GET_RAINFALL:
         return { 
             ...state,
@@ -19,12 +18,11 @@ export default function reducer (state = initialState, action){
             failed:false
         }
     case GET_RAINFALL_SUCCESS:
-        console.log("payload:",payload)
         return {
             ...state,
             loading:false,
             // todo: change this to the format in which the database responds
-            rainfall:payload.data
+            rainfall:action.payload.data.data
         }
     case GET_RAINFALL_FAIL:
         return {
@@ -43,7 +41,11 @@ export function getRainFall(){
         type: GET_RAINFALL,
         payload: {
             request:{
-                url: '/rainfall/daily'
+                method: 'GET',
+                url: '/rainfall/daily',
+                data: {
+                    number_of_units:4
+                }
             }
         }
     }
