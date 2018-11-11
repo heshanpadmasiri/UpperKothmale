@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions, processColor, FlatList } from 'react-native';
-import { Text, Header, Avatar, CheckBox, Slider, Button} from 'react-native-elements';
+import { Text, Header, Avatar, CheckBox, Button} from 'react-native-elements';
+import { Slider } from 'react-native-elements'
+
 import commonStyles from '../Styles/Common';
 import {LineChart} from 'react-native-charts-wrapper';
 import { connect } from 'react-redux';
@@ -103,7 +105,6 @@ export class GraphsPage extends React.Component {
         this.setState({
             values: values
         });
-        console.log(this.state);
     }
 
     _goToStatusPage(){
@@ -182,7 +183,9 @@ export class GraphsPage extends React.Component {
                         this.setState({value});   
                         this.updateValues();                     
                     }} 
-                    
+                    thumbImage={
+                        require('../assets/imgs/slider_grip.png')
+                    }
                     maximumTrackTintColor={"#b3b3b3"}
                     minimumTrackTintColor={"#b3b3b3"}
                     step={0.25}
@@ -255,7 +258,6 @@ const styles = StyleSheet.create({
 
 const mapSateToProps = state => {
     const rainfallRecord = state.rainfall;
-    console.log('ttt',state.rainfall);
     station_ids = Object.keys(rainfallRecord);
     var rainFallData = [];
     for (let i = 0; i < station_ids.length; i++) {
@@ -265,7 +267,8 @@ const mapSateToProps = state => {
         var record = []
         for (let index = 0; index < rainfalls.length; index++) {
             const data = rainfalls[index];
-            record.push(Math.max(data.rfd_crfValue,0));
+            //record.push(Math.max(data.rfd_crfValue,0));
+            record.push(data.rfd_crfValue);
         }
         rainFallData.push({
             key:id,
