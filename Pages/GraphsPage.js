@@ -8,6 +8,7 @@ import {LineChart} from 'react-native-charts-wrapper';
 import { connect } from 'react-redux';
 import { getRainFall} from '../States/reducer';
 import { Graph } from 'graphlib';
+import ToggleSwitch from 'toggle-switch-react-native';
 
 export class GraphsPage extends React.Component {
 
@@ -20,7 +21,9 @@ export class GraphsPage extends React.Component {
                 [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}],
                 [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}]
             ],
-            location:0            
+            location:0,
+            stationTypeName:'Rainfall',  
+            stationType:1         
         }
         this.updateValues = this.updateValues.bind(this);
         this.navigateOut = this.navigateOut.bind(this);
@@ -50,7 +53,19 @@ export class GraphsPage extends React.Component {
         
         />,      
         headerTransparent:true
+    }
 
+    switchStationType(){
+        const newStationType = (this.state.stationType + 1) % 2;
+        let newStationTypeName = 'Water Level'
+        if (newStationType == 1){
+            newStationTypeName = 'Rainfall';
+        } 
+        let temp = {
+            stationTypeName: newStationTypeName,
+            stationType:newStationType
+        };
+        this.setState(temp);
     }
 
     componentWillMount(){
@@ -177,6 +192,18 @@ export class GraphsPage extends React.Component {
                     />
                 </View>
 
+                <View style={styles.switchStationModeContainer}>
+                        <ToggleSwitch
+                            isOn={this.state.stationType == 1}
+                            onToggle={ (isOn) => {
+                                this.switchStationType()
+                            }}
+                        />
+                        <Text>
+                            {this.state.stationTypeName}
+                        </Text>
+                    </View>
+
                 <Slider
                     value={this.state.value}
                     onValueChange={(value) => {
@@ -252,6 +279,10 @@ const styles = StyleSheet.create({
     toggleButton:{
         backgroundColor:'#D3CDBD',
         borderColor: '#D3CDBD'
+    },
+    switchStationModeContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
     }
 
 });
