@@ -6,7 +6,14 @@ import { Slider } from 'react-native-elements'
 import commonStyles from '../Styles/Common';
 import {LineChart} from 'react-native-charts-wrapper';
 import { connect } from 'react-redux';
-import { getRainFall} from '../States/reducer';
+import { 
+            getRainFall,
+            getRainFallMonthly, 
+            getRainFallHourly,
+            getWaterLevel,
+            getWaterLevelMonthly,
+            getWaterLevelHourly
+        } from '../States/reducer';
 import { Graph } from 'graphlib';
 import ToggleSwitch from 'toggle-switch-react-native';
 
@@ -23,7 +30,9 @@ export class GraphsPage extends React.Component {
             ],
             location:0,
             stationTypeName:'Rainfall',  
-            stationType:1         
+            stationType:1,
+            timeFrame:2,
+            value:0       
         }
         this.updateValues = this.updateValues.bind(this);
         this.navigateOut = this.navigateOut.bind(this);
@@ -60,7 +69,23 @@ export class GraphsPage extends React.Component {
         let newStationTypeName = 'Water Level'
         if (newStationType == 1){
             newStationTypeName = 'Rainfall';
+            if(this.state.timeFrame == 0){
+                this.props.getRainFallMonthly();
+            } else if(this.state.timeFrame == 1){
+                this.props.getRainFallHourly();                
+            } else {
+                this.props.getRainFall();
+            }
+        } else {
+            if(this.state.timeFrame == 0){
+                this.props.getWaterLevelMonthly();
+            } else if(this.state.timeFrame == 1){
+                this.props.getWaterLevelHourly();                
+            } else {
+                this.props.getWaterLevel();
+            }
         } 
+        
         let temp = {
             stationTypeName: newStationTypeName,
             stationType:newStationType
@@ -69,27 +94,7 @@ export class GraphsPage extends React.Component {
     }
 
     componentWillMount(){
-        values = []
-        for (let i = 0; i < this.props.stations.length; i++) {
-            const ref = this.props.rainFallData[i];
-            const dataElement = ref.value;
-            const start = 0;
-            const end = dataElement.length - (25 - start);
-            const temp = dataElement.slice(start,end);
-            if(temp.length < 1){
-                return;
-            }
-            values.push({
-                key: ref.key,
-                value: temp,
-                name:ref.name
-            });
-            
-        }
-        
-        this.setState({
-            values: values
-        });
+        this.updateValues()
     }
 
     componentDidMount(){
@@ -97,14 +102,14 @@ export class GraphsPage extends React.Component {
     }
 
     updateValues(){
-
         values = []
         for (let i = 0; i < this.props.stations.length; i++) {
             const ref = this.props.rainFallData[i];
             const dataElement = ref.value;
             const start = Math.round(this.state.value * 4);
-
-            const end = dataElement.length - (25 - start);
+            const t = this.state.timeFrame === 1 ? 10 : 25;
+            console.log('dataElement:',dataElement)
+            const end = dataElement.length - (t - start);
             const temp = dataElement.slice(start,end);
             if(temp.length < 1){
                 return;
@@ -113,8 +118,7 @@ export class GraphsPage extends React.Component {
                 key: ref.key,
                 value: temp,
                 name:ref.name
-            });
-            
+            }); 
         }
         
         this.setState({
@@ -133,6 +137,7 @@ export class GraphsPage extends React.Component {
             this.props.navigation.navigate('TablePage');
         }
     }
+  
 
     render() {
         const buttons = ['Graphs', 'Status', 'Report']
@@ -162,34 +167,62 @@ export class GraphsPage extends React.Component {
                 <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
                     <CheckBox
                         center
-                        title='Month'
-                        textStyle={styles.buttonText}
-                        checkedIcon='dot-circle-o'
-                        uncheckedIcon='circle-o'
-                        checked={this.state.genderSelect}
-                        onPress={this.updateGender}
-                        containerStyle={styles.toggleButton}
-                    />
-                    <CheckBox
-                        center
-                        title='Year'
-                        textStyle={styles.buttonText}
-                        checkedIcon='dot-circle-o'
-                        uncheckedIcon='circle-o'
-                        checked={this.state.genderSelect}
-                        onPress={this.updateGender}
-                        containerStyle={styles.toggleButton}
-                    />
-                    <CheckBox
-                        center
                         title='Day'
                         textStyle={styles.buttonText}
                         checkedIcon='dot-circle-o'
                         uncheckedIcon='circle-o'
-                        checked={this.state.genderSelect}
-                        onPress={this.updateGender}
+                        checked={this.state.timeFrame === 2}
+                        onPress={()=>{
+                            if(this.state.stationType === 1){
+                                this.props.getRainFall();
+                            } else {
+                                this.props.getWaterLevel();
+                            }
+                            this.setState({
+                                timeFrame:2
+                            });
+                        }}
                         containerStyle={styles.toggleButton}
                     />
+                    <CheckBox
+                        center
+                        title='Month'
+                        textStyle={styles.buttonText}
+                        checkedIcon='dot-circle-o'
+                        uncheckedIcon='circle-o'
+                        checked={this.state.timeFrame === 0}
+                        onPress={()=>{
+                            if(this.state.stationType === 1){                                
+                                this.props.getRainFallMonthly();
+                            } else {
+                                this.props.getWaterLevelMonthly();
+                            }
+                            this.setState({
+                                timeFrame:0
+                            });
+                        }}
+                        containerStyle={styles.toggleButton}
+                    />
+                    <CheckBox
+                        center
+                        title='Hour'
+                        textStyle={styles.buttonText}
+                        checkedIcon='dot-circle-o'
+                        uncheckedIcon='circle-o'
+                        checked={this.state.timeFrame === 1}
+                        onPress={()=>{
+                            if (this.state.stationType === 1){
+                                this.props.getRainFallHourly();
+                            } else {
+                                this.props.getWaterLevelHourly();
+                            }                            
+                            this.setState({
+                                timeFrame:1
+                            });
+                        }}
+                        containerStyle={styles.toggleButton}
+                    />
+                   
                 </View>
 
                 <View style={styles.switchStationModeContainer}>
@@ -289,6 +322,7 @@ const styles = StyleSheet.create({
 
 const mapSateToProps = state => {
     const rainfallRecord = state.rainfall;
+    console.log('rainfallRecord:',rainfallRecord)
     station_ids = Object.keys(rainfallRecord);
     var rainFallData = [];
     for (let i = 0; i < station_ids.length; i++) {
@@ -299,7 +333,8 @@ const mapSateToProps = state => {
         for (let index = 0; index < rainfalls.length; index++) {
             const data = rainfalls[index];
             //record.push(Math.max(data.rfd_crfValue,0));
-            record.push(data.rfd_crfValue);
+            
+            record.push(data);
         }
         rainFallData.push({
             key:id,
@@ -314,7 +349,12 @@ const mapSateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    getRainFall
+    getRainFall,
+    getRainFallMonthly,
+    getRainFallHourly,
+    getWaterLevel,
+    getWaterLevelMonthly,
+    getWaterLevelHourly
 };
 
 export default connect(mapSateToProps, mapDispatchToProps)(GraphsPage);
