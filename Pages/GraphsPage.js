@@ -107,7 +107,7 @@ export class GraphsPage extends React.Component {
             const ref = this.props.rainFallData[i];
             const dataElement = ref.value;
             const start = Math.round(this.state.value * 4);
-            const t = this.state.timeFrame === 1 ? 10 : 25;
+            const t = this.state.timeFrame === 1 ? 20 : 25;
             console.log('dataElement:',dataElement)
             const end = dataElement.length - (t - start);
             const temp = dataElement.slice(start,end);
