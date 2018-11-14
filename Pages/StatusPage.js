@@ -29,7 +29,9 @@ export class StatusPage extends React.Component {
         {key: 'first', title: 'First'},
         {key: 'second', title: 'Second'}
       ],
-      stationStatus:[]
+      stations:[],
+      ready:false,
+      stationsNames:[]
     };
     this.navigateOut = this.navigateOut.bind(this);
     this._goToGraphPage = this._goToGraphPage.bind(this);
@@ -78,10 +80,14 @@ export class StatusPage extends React.Component {
     headerTransparent:true
 }
 
+  
+
   render() {
-    const buttons = ['Station 1', 'Station 2', 'Station 3','Station 4']
+    const buttons = this.state.stationsNames[0]
     const secondRow = ['Station 5', 'Station 6', 'Station 7','Station 8']
     const popupVisible = this.state.popupVisible;
+    const ready = this.props.ready;
+    
     return (
       <View style={{flex: 1}}>
         <View style={styles.container}>
@@ -138,7 +144,12 @@ export class StatusPage extends React.Component {
             <Button buttonStyle={styles.ennabledButton}  
                 titleStyle={styles.buttonText}                      
                 containerStyle={styles.buttonContainer} 
-                title="Data"                
+                title="Data"  
+                onPress={ () => {
+                  console.log('state',this.state)
+                  console.log('props', this.props)
+                }
+                }              
             />
             
             <Button buttonStyle={styles.ennabledButton}  
@@ -147,26 +158,92 @@ export class StatusPage extends React.Component {
                 title="Status"                
             />            
         </View>
-        <ButtonGroup
-          onPress={(index)=>{
-            this.setState({popupVisible:!this.state.popupVisible})
-          }}
-          selectedIndexes={this.state.selectedIndexs}
-          buttons={buttons}
-          selectMultiple={true}
-          selectedButtonStyle={styles.ButtonGroupSelected}
-          containerStyle={styles.buttonGroupContainer}
-        />
-        <ButtonGroup
-          onPress={(index)=>{
-            this.setState({popupVisible:!this.state.popupVisible})
-          }}
-          selectedIndexes={this.state.selectedIndexs}
-          buttons={secondRow}
-          selectMultiple={true}
-          selectedButtonStyle={styles.ButtonGroupSelected}
-          containerStyle={styles.buttonGroupContainer}
-        />
+        { ready ? (
+          <View>
+            <ButtonGroup
+              onPress={(index)=>{
+                this.setState({popupVisible:!this.state.popupVisible})
+              }}
+              selectedIndexes={this.state.selectedIndexs}
+              buttons={this.props.stationsNames[0]}
+              selectMultiple={true}
+              selectedButtonStyle={styles.ButtonGroupSelected}
+              containerStyle={styles.buttonGroupContainer}
+            />
+            <ButtonGroup
+              onPress={(index)=>{
+                this.setState({popupVisible:!this.state.popupVisible})
+              }}
+              selectedIndexes={this.state.selectedIndexs}
+              buttons={this.props.stationsNames[1]}
+              selectMultiple={true}
+              selectedButtonStyle={styles.ButtonGroupSelected}
+              containerStyle={styles.buttonGroupContainer}
+            />
+            <ButtonGroup
+              onPress={(index)=>{
+                this.setState({popupVisible:!this.state.popupVisible})
+              }}
+              selectedIndexes={this.state.selectedIndexs}
+              buttons={this.props.stationsNames[2]}
+              selectMultiple={true}
+              selectedButtonStyle={styles.ButtonGroupSelected}
+              containerStyle={styles.buttonGroupContainer}
+            />
+            <ButtonGroup
+              onPress={(index)=>{
+                this.setState({popupVisible:!this.state.popupVisible})
+              }}
+              selectedIndexes={this.state.selectedIndexs}
+              buttons={this.props.stationsNames[3]}
+              selectMultiple={true}
+              selectedButtonStyle={styles.ButtonGroupSelected}
+              containerStyle={styles.buttonGroupContainer}
+            />
+            <ButtonGroup
+              onPress={(index)=>{
+                this.setState({popupVisible:!this.state.popupVisible})
+              }}
+              selectedIndexes={this.state.selectedIndexs}
+              buttons={this.props.stationsNames[4]}
+              selectMultiple={true}
+              selectedButtonStyle={styles.ButtonGroupSelected}
+              containerStyle={styles.buttonGroupContainer}
+            />
+            <ButtonGroup
+              onPress={(index)=>{
+                this.setState({popupVisible:!this.state.popupVisible})
+              }}
+              selectedIndexes={this.state.selectedIndexs}
+              buttons={this.props.stationsNames[5]}
+              selectMultiple={true}
+              selectedButtonStyle={styles.ButtonGroupSelected}
+              containerStyle={styles.buttonGroupContainer}
+            />
+            <ButtonGroup
+              onPress={(index)=>{
+                this.setState({popupVisible:!this.state.popupVisible})
+              }}
+              selectedIndexes={this.state.selectedIndexs}
+              buttons={this.props.stationsNames[6]}
+              selectMultiple={true}
+              selectedButtonStyle={styles.ButtonGroupSelected}
+              containerStyle={styles.buttonGroupContainer}
+            />
+            <ButtonGroup
+              onPress={(index)=>{
+                this.setState({popupVisible:!this.state.popupVisible})
+              }}
+              selectedIndexes={this.state.selectedIndexs}
+              buttons={this.props.stationsNames[7]}
+              selectMultiple={true}
+              selectedButtonStyle={styles.ButtonGroupSelected}
+              containerStyle={styles.buttonGroupContainer}
+            />
+          </View>
+        ) : <View></View>
+        }
+                
         <FlatList
           data={this.state.data}
           extraData={this.state}
@@ -290,8 +367,28 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   console.log('mapStateToProps:',state)
+  const stations =state.stationStatus;
+  var out =[]
+  var station_names = [];
+  for (let i = 0; i < 32; i += 4) {
+    const _stations = stations.slice(i,i+4);
+    var temp = []
+    for (let i = 0; i < _stations.length; i++) {
+      const element = _stations[i];
+      temp.push(element.station_name)
+    }
+    out.push(_stations)    
+    station_names.push(temp)
+  }
+  console.log(out)
+  console.log('stationNames:',station_names)
+  console.log(state.loading,state.failed)
+  const ready = (state.loading === false) &&  (state.failed === false)
   return {
-    success:true
+    stations:out,
+    stationsNames: station_names,
+
+    ready:ready
   }
 }
 
