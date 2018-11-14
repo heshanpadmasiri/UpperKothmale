@@ -5,6 +5,9 @@ import { Tab, Tabs, TabHeading, Card } from 'native-base'
 import { Avatar, Header, Button, Text, ButtonGroup} from 'react-native-elements';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view'
 
+import { connect } from 'react-redux';
+import { getStationStatus } from '../States/reducer'
+
 const FirstRoute = () => (
   <View style={{backgroundColor: '#ff4081'}}></View>
 )
@@ -12,7 +15,7 @@ const SecondRoute = () => (
   <View style={{backgroundColor: '#673ab7'}}></View>
 )
 
-export default class StatusPage extends React.Component {
+export class StatusPage extends React.Component {
 
   constructor(props){
     super(props);
@@ -25,10 +28,16 @@ export default class StatusPage extends React.Component {
       routes: [
         {key: 'first', title: 'First'},
         {key: 'second', title: 'Second'}
-      ]
+      ],
+      stationStatus:[]
     };
     this.navigateOut = this.navigateOut.bind(this);
     this._goToGraphPage = this._goToGraphPage.bind(this);
+  }
+
+  componentWillMount(){
+    console.log('t')
+    this.props.getStationStatus();
   }
 
   navigateOut(location){
@@ -45,7 +54,7 @@ export default class StatusPage extends React.Component {
 
   static navigationOptions = {
     header: props => <Header
-    backgroundColor="#D3CDBD"
+    backgroundCoslor="#D3CDBD"
     leftComponent={<Avatar
       size="small"
       rounded
@@ -278,3 +287,16 @@ const styles = StyleSheet.create({
     width:120,
     height:95}
 });
+
+const mapStateToProps = state => {
+  console.log('mapStateToProps:',state)
+  return {
+    success:true
+  }
+}
+
+const mapDispatchToProps = {
+  getStationStatus
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(StatusPage);

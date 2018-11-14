@@ -18,9 +18,14 @@ export const GET_WATERLEVEL_HOURLY = 'database/waterlevel-hourly/LOAD';
 export const GET_WATERLEVEL_HOURLY_SUCCESS = 'database/waterlevel-hourly/LOAD_SUCCESS';
 export const GET_WATERLEVEL_HOURLY_FAIL = 'database/waterlevel-hourly/LOAD_FAIL';
 
+export const GET_STATION_STATUS = 'database/station/LOAD';
+export const GET_STATION_STATUS_SUCCESS = 'database/station/LOAD_SUCCESS';
+export const GET_STATION_STATUS_FAIL = 'database/station/LOAD_FAIL';
+
 const initialState = {
     rainfall:[],
     stations:[],
+    stationStatus:[],
     loading:false,
     failed:false
 }
@@ -142,6 +147,24 @@ export default function reducer (state = initialState, action){
             loading:false,
             failed:true
         }
+    case GET_STATION_STATUS:
+        return {
+            ...state,
+            loading:true,
+            failed:false
+        }
+    case GET_STATION_STATUS_SUCCESS:
+        return {
+            ...state,
+            loading:false,
+            stationStatus:action.payload.data.data
+        }
+    case GET_STATION_STATUS_FAIL:
+        return {
+            ...state,
+            loading:false,
+            failed:true
+        }
   default:
     return state
   }
@@ -233,6 +256,18 @@ export function getWaterLevelHourly(){
                 data: {
                     number_of_units:4
                 }
+            }
+        }
+    }
+}
+
+export function getStationStatus(){
+    return {
+        type: GET_STATION_STATUS,
+        payload:{
+            request:{
+                method: 'GET',
+                url: '/station/readings'
             }
         }
     }

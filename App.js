@@ -24,7 +24,7 @@ import reducer from './States/reducer';
 
 //todo: change this to the public ip the server
 const client = axios.create({
-  baseURL: 'http://192.168.43.253:8080'
+  baseURL: 'http://10.10.12.133:8080'
 });
 
 const store = createStore(reducer,applyMiddleware(axiosMiddleware(client)));
