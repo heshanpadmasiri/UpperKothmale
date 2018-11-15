@@ -186,33 +186,34 @@ export class StatusPage extends React.Component {
               keyExtractor={(item, index) => index}
               // todo: find what is the value of station at this point
               renderItem={(station) => {
-                console.log(station)
                 return (
                 
-                <View style={{height:145}}>
-                <Tabs >
-                  <Tab heading={<TabHeading style={styles.tabBar}>
-                                <Text style={{color: '#ffffff'}}>{station.item.station_name}</Text>
-                              </TabHeading>}>
+                <View style={{height:125, backgroundColor:'#D3CDBD',color:'#D3CDBD'}}>
+                  <Tabs 
+                    style={styles.tabs}
+                    tabBarUnderlineStyle={{
+                      backgroundColor: '#D3CDBD',
+                      color:'#D3CDBD',
+                    }}
+                  >
+                    <Tab heading={<TabHeading style={styles.tabBar}>
+                                  <Text style={{color: '#ffffff',backgroundColor:'#D3CDBD'}}>{station.item.station_name}</Text>
+                                </TabHeading>}>
 
-                    <View style={styles.line} >
-                      <Text>Activate Statues:</Text>
-                      <Text>{station.item.activateStatues}</Text>
-                    </View>
-                    <View style={styles.line} >
-                      <Text>Rainfall Status</Text>
-                      <Text>{station.item.rainFallStauts}</Text>
-                    </View>
-                    <View style={styles.line} >
-                      <Text>WaterLevel Status</Text>
-                      <Text>{station.item.waterLevelPressureStatus}</Text>
-                    </View>
-                    <View style={styles.line} >
-                      <Text>WaterLevel Status</Text>
-                      <Text>{station.item.waterLevelStatus}</Text>
-                    </View>
-                  </Tab>
-                </Tabs>
+                      <View style={styles.line} >
+                        <Text>Activate Statues:                     {station.item.activateStatues}</Text>
+                      </View>
+                      <View style={styles.line} >
+                        <Text>Rainfall Status:                        {station.item.rainFallStauts}</Text>
+                      </View>
+                      <View style={styles.line} >
+                        <Text>WaterLevel pressure Status:{station.item.waterLevelPressureStatus}</Text>
+                      </View>
+                      <View style={styles.line} >
+                        <Text>WaterLevel Status:                 {station.item.waterLevelStatus}</Text>
+                      </View>
+                    </Tab>
+                  </Tabs>
                 </View>
               )}}
             />
@@ -255,11 +256,19 @@ const styles = StyleSheet.create({
       backgroundColor:'#D3CDBD',
       borderColor: '#D3CDBD'
   },
+  tabs:{
+    backgroundColor:'#D3CDBD',
+    color: '#D3CDBD'
+  },
   tabBar:{    
-    backgroundColor: '#D3CDBD'
+    backgroundColor: '#D3CDBD',
+    color:'#D3CDBD',
+    height:50
   },
   line:{
-    flexDirection:"row",justifyContent:"space-evenly", backgroundColor:"#e0dcd1",
+    flexDirection:"row",
+    justifyContent:"flex-start", 
+    backgroundColor:"#e0dcd1",
     fontFamily:'OpenSans'
   },
   buttonGroupContainer:{
@@ -269,6 +278,7 @@ const styles = StyleSheet.create({
   ButtonGroupSelected:{
     backgroundColor:'#D8DCE5',
   },
+  
   popUp:{
     borderRadius:10,
     backgroundColor:'#992600',
