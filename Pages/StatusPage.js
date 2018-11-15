@@ -159,148 +159,66 @@ export class StatusPage extends React.Component {
             />            
         </View>
         { ready ? (
-          <View>
+          <FlatList
+          data={this.props.stationsNames}
+          extraData={this.state}
+          keyExtractor={(item, index) => index}
+          renderItem={({item}) => (
             <ButtonGroup
               onPress={(index)=>{
                 this.setState({popupVisible:!this.state.popupVisible})
               }}
               selectedIndexes={this.state.selectedIndexs}
-              buttons={this.props.stationsNames[0]}
+              buttons={item}
               selectMultiple={true}
               selectedButtonStyle={styles.ButtonGroupSelected}
               containerStyle={styles.buttonGroupContainer}
             />
-            <ButtonGroup
-              onPress={(index)=>{
-                this.setState({popupVisible:!this.state.popupVisible})
-              }}
-              selectedIndexes={this.state.selectedIndexs}
-              buttons={this.props.stationsNames[1]}
-              selectMultiple={true}
-              selectedButtonStyle={styles.ButtonGroupSelected}
-              containerStyle={styles.buttonGroupContainer}
-            />
-            <ButtonGroup
-              onPress={(index)=>{
-                this.setState({popupVisible:!this.state.popupVisible})
-              }}
-              selectedIndexes={this.state.selectedIndexs}
-              buttons={this.props.stationsNames[2]}
-              selectMultiple={true}
-              selectedButtonStyle={styles.ButtonGroupSelected}
-              containerStyle={styles.buttonGroupContainer}
-            />
-            <ButtonGroup
-              onPress={(index)=>{
-                this.setState({popupVisible:!this.state.popupVisible})
-              }}
-              selectedIndexes={this.state.selectedIndexs}
-              buttons={this.props.stationsNames[3]}
-              selectMultiple={true}
-              selectedButtonStyle={styles.ButtonGroupSelected}
-              containerStyle={styles.buttonGroupContainer}
-            />
-            <ButtonGroup
-              onPress={(index)=>{
-                this.setState({popupVisible:!this.state.popupVisible})
-              }}
-              selectedIndexes={this.state.selectedIndexs}
-              buttons={this.props.stationsNames[4]}
-              selectMultiple={true}
-              selectedButtonStyle={styles.ButtonGroupSelected}
-              containerStyle={styles.buttonGroupContainer}
-            />
-            <ButtonGroup
-              onPress={(index)=>{
-                this.setState({popupVisible:!this.state.popupVisible})
-              }}
-              selectedIndexes={this.state.selectedIndexs}
-              buttons={this.props.stationsNames[5]}
-              selectMultiple={true}
-              selectedButtonStyle={styles.ButtonGroupSelected}
-              containerStyle={styles.buttonGroupContainer}
-            />
-            <ButtonGroup
-              onPress={(index)=>{
-                this.setState({popupVisible:!this.state.popupVisible})
-              }}
-              selectedIndexes={this.state.selectedIndexs}
-              buttons={this.props.stationsNames[6]}
-              selectMultiple={true}
-              selectedButtonStyle={styles.ButtonGroupSelected}
-              containerStyle={styles.buttonGroupContainer}
-            />
-            <ButtonGroup
-              onPress={(index)=>{
-                this.setState({popupVisible:!this.state.popupVisible})
-              }}
-              selectedIndexes={this.state.selectedIndexs}
-              buttons={this.props.stationsNames[7]}
-              selectMultiple={true}
-              selectedButtonStyle={styles.ButtonGroupSelected}
-              containerStyle={styles.buttonGroupContainer}
-            />
-          </View>
+          )}/>
+          
         ) : <View></View>
         }
+        {
+          ready ? (
+            <FlatList
+              data={this.props.stations}
+              extraData={this.props}
+              keyExtractor={(item, index) => index}
+              // todo: find what is the value of station at this point
+              renderItem={(station) => {
+                console.log(station)
+                return (
                 
-        <FlatList
-          data={this.state.data}
-          extraData={this.state}
-          renderItem={({item}) => (
-            <View style={{height:145}}>
-          <Tabs >
-            <Tab heading={<TabHeading style={styles.tabBar}>
-                          <Text style={{color: '#ffffff'}}>Station1</Text>
-                        </TabHeading>}>
+                <View style={{height:145}}>
+                <Tabs >
+                  <Tab heading={<TabHeading style={styles.tabBar}>
+                                <Text style={{color: '#ffffff'}}>{station.item.station_name}</Text>
+                              </TabHeading>}>
 
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-              <View style={styles.line} >
-                <Text>WSS</Text>
-                <Text>TX1USE</Text>
-                <Text>Communication</Text>
-              </View>
-            </Tab>
-            <Tab 
-                heading={<TabHeading style={styles.tabBar}>
-                          <Text style={{color: '#ffffff'}}>Notifications</Text>
-                        </TabHeading>}>
-                
-            </Tab>
-            <Tab heading={<TabHeading style={styles.tabBar}>
-                          <Text style={{color: '#ffffff'}}>Information</Text>
-                        </TabHeading>}>
-                
-            </Tab>
-            <Tab heading={<TabHeading style={styles.tabBar}>
-                          <Text style={{color: '#ffffff'}}>Gauge type</Text>
-                        </TabHeading>}>
-                
-            </Tab>
-          </Tabs>
-        </View>
+                    <View style={styles.line} >
+                      <Text>Activate Statues:</Text>
+                      <Text>{station.item.activateStatues}</Text>
+                    </View>
+                    <View style={styles.line} >
+                      <Text>Rainfall Status</Text>
+                      <Text>{station.item.rainFallStauts}</Text>
+                    </View>
+                    <View style={styles.line} >
+                      <Text>WaterLevel Status</Text>
+                      <Text>{station.item.waterLevelPressureStatus}</Text>
+                    </View>
+                    <View style={styles.line} >
+                      <Text>WaterLevel Status</Text>
+                      <Text>{station.item.waterLevelStatus}</Text>
+                    </View>
+                  </Tab>
+                </Tabs>
+                </View>
+              )}}
+            />
+          ) : <View></View>
+        }       
         
-          )}
-        />
         </View>
       </View>
     )
@@ -368,7 +286,13 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   console.log('mapStateToProps:',state)
   const stations =state.stationStatus;
-  var out =[]
+  for (let i = 0; i < stations.length; i++) {
+    const station = stations[i];
+    station.activateStatues = station.activateStatues? "Active":"Inactive";
+    station.rainFallStauts = station.rainFallStauts? "Active" : "Inactive";
+    station.waterLevelPressureStatus = station.waterLevelPressureStatus? "Active" : "Inactive";
+    station.waterLevelStatus = station.waterLevelStatus? "Active" : "Inactive";
+  }
   var station_names = [];
   for (let i = 0; i < 32; i += 4) {
     const _stations = stations.slice(i,i+4);
@@ -376,16 +300,14 @@ const mapStateToProps = state => {
     for (let i = 0; i < _stations.length; i++) {
       const element = _stations[i];
       temp.push(element.station_name)
-    }
-    out.push(_stations)    
+    }  
     station_names.push(temp)
   }
-  console.log(out)
   console.log('stationNames:',station_names)
   console.log(state.loading,state.failed)
   const ready = (state.loading === false) &&  (state.failed === false)
   return {
-    stations:out,
+    stations:stations,
     stationsNames: station_names,
 
     ready:ready
