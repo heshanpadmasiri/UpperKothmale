@@ -136,7 +136,6 @@ export class GraphsPage extends React.Component {
 
     render() {
         const buttons = ['Graphs', 'Status', 'Report']
-        console.log(this.state.live)
         return (
             <View style={{flex: 1}}>
                 <View style={styles.container}>
@@ -361,7 +360,7 @@ const styles = StyleSheet.create({
 
 const mapSateToProps = state => {
     const rainfallRecord = state.rainfall;
-    console.log('rainfallRecord:',state)
+    console.log('state:',state)
     station_ids = Object.keys(rainfallRecord);
     var rainFallData = [];
     for (let i = 0; i < station_ids.length; i++) {

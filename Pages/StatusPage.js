@@ -1,9 +1,8 @@
 import React from 'react'
 import { View, StyleSheet, ImageBackground, Image, FlatList } from 'react-native';
 import commonStyles from '../Styles/Common';
-import { Tab, Tabs, TabHeading, Card } from 'native-base'
-import { Avatar, Header, Button, Text, ButtonGroup} from 'react-native-elements';
-import { TabView, TabBar, SceneMap } from 'react-native-tab-view'
+import { Tab, Tabs, TabHeading } from 'native-base'
+import { Avatar, Header, Button, Text, ButtonGroup, Overlay} from 'react-native-elements';
 
 import { connect } from 'react-redux';
 import { getStationStatus } from '../States/reducer';
@@ -21,12 +20,16 @@ export class StatusPage extends React.Component {
 
   constructor(props){
     super(props);
+    var popupVisible = Array(32).fill(false)
+    var selectedIndex = Array(8);
+    for (let i = 0; i < selectedIndex.length; i++) {
+      selectedIndex[i] = [];      
+    }
+    console.log(selectedIndex)
     this.state = {
       data:[true,true,true],
-      popupVisible:[
-        false
-      ],
-      selectedIndexs:[0],
+      popupVisible:selectedIndex,
+      selectedIndexs:[],
       location:1,
       index: 0,
       routes: [
@@ -120,6 +123,7 @@ export class StatusPage extends React.Component {
 }
 
   createPopUps(i){    
+    console.log('x',this.props)
     var stationData = this.props.stations;
     return(
       <View style={styles.popUp}>
@@ -166,30 +170,35 @@ export class StatusPage extends React.Component {
   }
 
   setPopupStatus(index,item){
+    console.log(index,item)
     var stationName;
     if (index.length === 0){
       stationName = item[0]
     } else {
-      stationName = item[index[1]]
+      stationName = item[index[0]]
     }
     var i;
+    var row;
+    console.log(this.props.stations);
     for (let index = 0; index < this.props.stations.length; index++) {
       const station = this.props.stations[index];
       if(station.station_name === stationName){
         i = index;
+        row = index/4;
         break;
       }
     }
+    console.log(i,stationName,row)
     var popupVisible = this.state.popupVisible;
     popupVisible[i] = !popupVisible[i];
     this.setState({
       popupVisible:popupVisible
     });
+    console.log(this.state.popupVisible)
   } 
 
   render() {
     const ready = this.props.ready;
-    var stationData = this.props.stations;
     return (
       <View style={{flex: 1}}>
         <View style={styles.container}>
@@ -198,6 +207,24 @@ export class StatusPage extends React.Component {
             textContent={'Loading...'}
             textStyle={{color: '#FFF'}}
           />
+          <Overlay
+            isVisible={this.props.failed}
+            windowBackgroundColor="rgba(255, 255, 255, .5)"
+            overlayBackgroundColor="red"
+            width="auto"
+            height="auto"
+          >
+            <Text>Server connection Error!</Text>
+            <Button
+              titleStyle={styles.buttonText}
+              containerStyle={styles.buttonContainer}
+              title="Re-try"
+              onPress={() => {
+                this.props.getStationStatus();
+              }}
+            />
+          </Overlay>
+
           <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
             <Button buttonStyle={styles.ennabledButton}  
                 titleStyle={styles.buttonText}                      
@@ -350,7 +377,8 @@ export class StatusPage extends React.Component {
           data={this.props.stationsNames}
           extraData={this.state}
           keyExtractor={(item, index) => index}
-          renderItem={({item}) => {
+
+          renderItem={({item,index}) => {
             return (<ButtonGroup
               onPress={(index)=>{
                 console.log('button pressed:',item,index)
@@ -358,6 +386,7 @@ export class StatusPage extends React.Component {
               }}
               buttons={item}
               selectMultiple={true}
+              selectedIndexes={this.state.selectedIndexs[index]}
               selectedButtonStyle={styles.ButtonGroupSelected}
               containerStyle={styles.buttonGroupContainer}
             />)
@@ -500,14 +529,14 @@ const mapStateToProps = state => {
     }  
     station_names.push(temp)
   }
-  console.log('stationNames:',station_names)
-  console.log(state.loading,state.failed)
-  const ready = (state.loading === false) &&  (state.failed === false)
+  
+  const ready = (state.loading === false) &&  (state.failed === false) && stations.length > 0;
   return {
     stations:stations,
     stationsNames: station_names,
     ready:ready,
-    loading:state.loading
+    loading:state.loading,
+    failed:state.failed
   }
 }
 

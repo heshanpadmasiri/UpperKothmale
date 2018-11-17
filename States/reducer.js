@@ -27,7 +27,8 @@ const initialState = {
     stations:[],
     stationStatus:[],
     loading:false,
-    failed:false
+    failed:false,
+    error:null
 }
 
 export default function reducer (state = initialState, action){
@@ -39,12 +40,23 @@ export default function reducer (state = initialState, action){
             failed:false
         }
     case GET_RAINFALL_SUCCESS:
-        return {
-            ...state,
-            loading:false,
-            // todo: change this to the format in which the database responds
-            rainfall:action.payload.data.data
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                rainfall:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
         }
+        
     case GET_RAINFALL_FAIL:
         return {
             ...state,
@@ -58,12 +70,23 @@ export default function reducer (state = initialState, action){
             failed:false
         }
     case GET_RAINFALL_MONTHLY_SUCCESS:
-        return {
-            ...state,
-            loading:false,
-            // todo: change this to the format in which the database responds
-            rainfall:action.payload.data.data
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                rainfall:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
         }
+        
     case GET_RAINFALL_MONTHLY_FAIL:
         return {
             ...state,
@@ -77,11 +100,21 @@ export default function reducer (state = initialState, action){
             failed:false
         }
     case GET_RAINFALL_HOURLY_SUCCESS:
-        return {
-            ...state,
-            loading:false,
-            // todo: change this to the format in which the database responds
-            rainfall:action.payload.data.data
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                rainfall:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
         }
     case GET_RAINFALL_HOURLY_FAIL:
         return {
@@ -97,11 +130,21 @@ export default function reducer (state = initialState, action){
             failed:false
         }
     case GET_WATERLEVEL_SUCCESS:
-        return {
-            ...state,
-            loading:false,
-            // todo: change this to the format in which the database responds
-            rainfall:action.payload.data.data
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                rainfall:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
         }
     case GET_WATERLEVEL_FAIL:
         return {
@@ -116,11 +159,21 @@ export default function reducer (state = initialState, action){
             failed:false
         }
     case GET_WATERLEVEL_MONTHLY_SUCCESS:
-        return {
-            ...state,
-            loading:false,
-            // todo: change this to the format in which the database responds
-            rainfall:action.payload.data.data
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                rainfall:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
         }
     case GET_WATERLEVEL_MONTHLY_FAIL:
         return {
@@ -135,11 +188,21 @@ export default function reducer (state = initialState, action){
             failed:false
         }
     case GET_WATERLEVEL_HOURLY_SUCCESS:
-        return {
-            ...state,
-            loading:false,
-            // todo: change this to the format in which the database responds
-            rainfall:action.payload.data.data
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                rainfall:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
         }
     case GET_WATERLEVEL_HOURLY_FAIL:
         return {
@@ -154,11 +217,22 @@ export default function reducer (state = initialState, action){
             failed:false
         }
     case GET_STATION_STATUS_SUCCESS:
-        return {
-            ...state,
-            loading:false,
-            stationStatus:action.payload.data.data
-        }
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                stationStatus:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
+        }        
     case GET_STATION_STATUS_FAIL:
         return {
             ...state,
