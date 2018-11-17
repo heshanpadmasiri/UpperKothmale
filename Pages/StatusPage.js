@@ -6,7 +6,9 @@ import { Avatar, Header, Button, Text, ButtonGroup} from 'react-native-elements'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view'
 
 import { connect } from 'react-redux';
-import { getStationStatus } from '../States/reducer'
+import { getStationStatus } from '../States/reducer';
+
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const FirstRoute = () => (
   <View style={{backgroundColor: '#ff4081'}}></View>
@@ -191,6 +193,11 @@ export class StatusPage extends React.Component {
     return (
       <View style={{flex: 1}}>
         <View style={styles.container}>
+          <Spinner
+            visible={this.props.loading}
+            textContent={'Loading...'}
+            textStyle={{color: '#FFF'}}
+          />
           <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
             <Button buttonStyle={styles.ennabledButton}  
                 titleStyle={styles.buttonText}                      
@@ -344,13 +351,11 @@ export class StatusPage extends React.Component {
           extraData={this.state}
           keyExtractor={(item, index) => index}
           renderItem={({item}) => {
-            console.log(item)
             return (<ButtonGroup
               onPress={(index)=>{
                 console.log('button pressed:',item,index)
                 this.setPopupStatus(index,item)
               }}
-              selectedIndexes={this.state.selectedIndexs}
               buttons={item}
               selectMultiple={true}
               selectedButtonStyle={styles.ButtonGroupSelected}
@@ -501,8 +506,8 @@ const mapStateToProps = state => {
   return {
     stations:stations,
     stationsNames: station_names,
-
-    ready:ready
+    ready:ready,
+    loading:state.loading
   }
 }
 

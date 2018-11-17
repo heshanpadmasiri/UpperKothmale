@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions, processColor, FlatList } from 'react-native';
 import { Text, Header, Avatar, CheckBox, Button} from 'react-native-elements';
-import { Slider } from 'react-native-elements'
+import { Slider } from 'react-native-elements';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import commonStyles from '../Styles/Common';
 import {LineChart} from 'react-native-charts-wrapper';
@@ -22,17 +23,13 @@ export class GraphsPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data: [
-                [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}],
-                [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}],
-                [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}],
-                [{x:0, y:1}, {x:1, y:2}, {x:2, y:3}, {x:3, y:4}, {x:4, y:5}, {x:5, y:1}, {x:6, y:1}, {x:7, y:2}, {x:8, y:3}, {x:9, y:5}, {x:10, y:6}, {x:11, y:1}]
-            ],
+            live:false,
             location:0,
             stationTypeName:'Rainfall',  
             stationType:1,
             timeFrame:2,
-            value:0       
+            value:0,
+            loading:true      
         }
         this.updateValues = this.updateValues.bind(this);
         this.navigateOut = this.navigateOut.bind(this);
@@ -108,7 +105,6 @@ export class GraphsPage extends React.Component {
             const dataElement = ref.value;
             const start = Math.round(this.state.value * 4);
             const t = this.state.timeFrame === 1 ? 20 : 25;
-            console.log('dataElement:',dataElement)
             const end = dataElement.length - (t - start);
             const temp = dataElement.slice(start,end);
             if(temp.length < 1){
@@ -120,10 +116,9 @@ export class GraphsPage extends React.Component {
                 name:ref.name
             }); 
         }
-        
         this.setState({
-            values: values
-        });
+            values:values
+        })
     }
 
     _goToStatusPage(){
@@ -141,9 +136,15 @@ export class GraphsPage extends React.Component {
 
     render() {
         const buttons = ['Graphs', 'Status', 'Report']
+        console.log(this.state.live)
         return (
             <View style={{flex: 1}}>
                 <View style={styles.container}>
+                <Spinner
+                    visible={this.props.state.loading}
+                    textContent={'Loading...'}
+                    textStyle={{color: '#FFF'}}
+                />
                 <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
                     <Button buttonStyle={styles.dissableButton}  
                         titleStyle={styles.buttonText}                      
@@ -179,7 +180,8 @@ export class GraphsPage extends React.Component {
                                 this.props.getWaterLevel();
                             }
                             this.setState({
-                                timeFrame:2
+                                timeFrame:2,
+                                live:false
                             });
                         }}
                         containerStyle={styles.toggleButton}
@@ -198,7 +200,8 @@ export class GraphsPage extends React.Component {
                                 this.props.getWaterLevelMonthly();
                             }
                             this.setState({
-                                timeFrame:0
+                                timeFrame:0,
+                                live:false
                             });
                         }}
                         containerStyle={styles.toggleButton}
@@ -217,7 +220,8 @@ export class GraphsPage extends React.Component {
                                 this.props.getWaterLevelHourly();
                             }                            
                             this.setState({
-                                timeFrame:1
+                                timeFrame:1,
+                                live:false
                             });
                         }}
                         containerStyle={styles.toggleButton}
@@ -230,6 +234,9 @@ export class GraphsPage extends React.Component {
                             isOn={this.state.stationType == 1}
                             onToggle={ (isOn) => {
                                 this.switchStationType()
+                                this.setState({
+                                    live:false
+                                })
                             }}
                         />
                         <Text>
@@ -240,7 +247,10 @@ export class GraphsPage extends React.Component {
                 <Slider
                     value={this.state.value}
                     onValueChange={(value) => {
-                        this.setState({value});   
+                        this.setState({value}); 
+                        this.setState({
+                            live:true
+                        })  
                         this.updateValues();                     
                     }} 
                     thumbImage={
@@ -250,8 +260,36 @@ export class GraphsPage extends React.Component {
                     minimumTrackTintColor={"#b3b3b3"}
                     step={0.25}
                 />
-
-                <FlatList 
+                
+                {(this.props.state.loading === false && this.props.state.failed === false && this.state.live === false)?(
+                    <FlatList 
+                    data={this.props.values}
+                    extraData={this.state}
+                    renderItem={({item}) => (
+                        
+                        <LineChart style={styles.chart}
+                            data={{
+                                dataSets:[
+                                    {label:item.name, 
+                                    values: item.value,
+                                    config:{
+                                        lineWidth: 2,
+                                        drawFilled: true,
+                                        color: processColor('red'),
+                                        fillColor: processColor('red'),
+                                        valueTextSize: 10,
+                                        drawCircles: true,
+                                        circleColor: processColor('yellow'),
+                                        drawCircleHole: false
+                                    }
+                                    }]
+                                }}
+                            chartDescription={{text: 'Test'}}
+        
+                        />          
+                    )}
+                    />):(
+                    <FlatList 
                     data={this.state.values}
                     extraData={this.state}
                     renderItem={({item}) => (
@@ -277,7 +315,8 @@ export class GraphsPage extends React.Component {
         
                         />          
                     )}
-                />
+                    />
+                )}
                           
                 </View>
             </View>
@@ -322,7 +361,7 @@ const styles = StyleSheet.create({
 
 const mapSateToProps = state => {
     const rainfallRecord = state.rainfall;
-    console.log('rainfallRecord:',rainfallRecord)
+    console.log('rainfallRecord:',state)
     station_ids = Object.keys(rainfallRecord);
     var rainFallData = [];
     for (let i = 0; i < station_ids.length; i++) {
@@ -342,9 +381,28 @@ const mapSateToProps = state => {
             name:name
         });
     }
+    var values = []
+    for (let i = 0; i < station_ids.length; i++) {
+        const ref = rainFallData[i];
+        const dataElement = ref.value;
+        const start = 0;
+        const t = 25;
+        const end = dataElement.length - (t - start);
+        const temp = dataElement.slice(start,end);
+        if(temp.length < 1){
+            return;
+        }
+        values.push({
+            key: ref.key,
+            value: temp,
+            name:ref.name
+        }); 
+    }
     return {
         rainFallData:rainFallData,
-        stations:station_ids
+        stations:station_ids,
+        state:state,
+        values:values
     };
 };
 
