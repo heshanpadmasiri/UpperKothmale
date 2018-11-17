@@ -21,7 +21,9 @@ export class StatusPage extends React.Component {
     super(props);
     this.state = {
       data:[true,true,true],
-      popupVisible:false,
+      popupVisible:[
+        false
+      ],
       selectedIndexs:[0],
       location:1,
       index: 0,
@@ -29,9 +31,45 @@ export class StatusPage extends React.Component {
         {key: 'first', title: 'First'},
         {key: 'second', title: 'Second'}
       ],
-      stations:[],
       ready:false,
-      stationsNames:[]
+      popupType:0,
+      stationCordinates:[
+        {x:30,y:20},
+        {x:32,y:20},
+        {x:30,y:20},
+        {x:35,y:20},
+        {x:30,y:20},
+        {x:40,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20},
+        {x:30,y:20}
+      ]
     };
     this.navigateOut = this.navigateOut.bind(this);
     this._goToGraphPage = this._goToGraphPage.bind(this);
@@ -56,16 +94,16 @@ export class StatusPage extends React.Component {
 
   static navigationOptions = {
     header: props => <Header
-    backgroundCoslor="#D3CDBD"
+    backgroundColor="#D3CDBD"
     leftComponent={<Avatar
-      size="small"
-      rounded
-      source={require('../assets/imgs/ceb_logo.jpeg')}
-      onPress={() => console.log("Works!")}
-      activeOpacity={0.7}
-    />
+        size="small"
+        rounded
+        source={require('../assets/imgs/ceb_logo.jpeg')}
+        onPress={() => console.log("Works!")}
+        activeOpacity={0.7}
+      />
 
-  }
+    }
     rightComponent={<Avatar
         size="small"
         rounded
@@ -73,21 +111,83 @@ export class StatusPage extends React.Component {
         onPress={() => console.log("Works!")}
         activeOpacity={0.7}
       />}
-    centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff',
-    fontFamily:'OpenSans' } }}
+    centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff',fontFamily:'OpenSans'  } }}
     
     />,      
     headerTransparent:true
 }
 
-  
+  createPopUps(i){    
+    var stationData = this.props.stations;
+    return(
+      <View style={styles.popUp}>
+        <View style={{backgroundColor:'#ff6633', alignItems:'center'}}>
+          <Text>{stationData[i].station_name}</Text>
+        </View>
+        {this.state.popupType === 0?(
+          <View>
+            <View style={{
+              flexDirection:'row',
+              justifyContent:'space-evenly'
+            }}>
+              <Text>Water Level</Text>
+              <Text>{stationData[i].waterLevel}</Text>
+            </View>
+            <View style={{
+              flexDirection:'row',
+              justifyContent:'space-evenly'
+            }}>
+              <Text>Rain Fall</Text>
+              <Text>{stationData[i].rainfall}</Text>
+            </View>
+          </View>)
+          :(
+          <View>
+            <View style={{
+              flexDirection:'row',
+              justifyContent:'space-evenly'
+            }}>
+              <Text>Water Level</Text>
+              <Text>{stationData[i].waterLevelStatus}</Text>
+            </View>
+            <View style={{
+              flexDirection:'row',
+              justifyContent:'space-evenly'
+            }}>
+              <Text>Rain Fall</Text>
+              <Text>{stationData[i].rainFallStauts}</Text>
+            </View>
+          </View>)}
+        
+      </View>
+    )
+  }
+
+  setPopupStatus(index,item){
+    var stationName;
+    if (index.length === 0){
+      stationName = item[0]
+    } else {
+      stationName = item[index[1]]
+    }
+    var i;
+    for (let index = 0; index < this.props.stations.length; index++) {
+      const station = this.props.stations[index];
+      if(station.station_name === stationName){
+        i = index;
+        break;
+      }
+    }
+    var popupVisible = this.state.popupVisible;
+    popupVisible[i] = !popupVisible[i];
+    this.setState({
+      popupVisible:popupVisible
+    });
+  } 
 
   render() {
-    const buttons = this.state.stationsNames[0]
-    const secondRow = ['Station 5', 'Station 6', 'Station 7','Station 8']
-    const popupVisible = this.state.popupVisible;
     const ready = this.props.ready;
-    
+    var stationData = this.props.stations;
     return (
       <View style={{flex: 1}}>
         <View style={styles.container}>
@@ -112,32 +212,105 @@ export class StatusPage extends React.Component {
             />
         </View>
         <ImageBackground
-          style={{width:325,height:200,marginVertical:5}}
-          source={{uri:'https://via.placeholder.com/200x325'}}
+          style={{width:325,height:200,marginVertical:5,left:9}}
+          source={require('../assets/imgs/map.jpg')}
         >
-          {popupVisible ? (
-            <View style={styles.popUp}>
-              <View style={{backgroundColor:'#ff6633', alignItems:'center'}}>
-                <Text>Station 1</Text>
-              </View>
-              <View style={{
-                flexDirection:'row',
-                justifyContent:'space-evenly'
-              }}>
-                <Text>Water Level</Text>
-                <Text>12</Text>
-              </View>
-              <View style={{
-                flexDirection:'row',
-                justifyContent:'space-evenly'
-              }}>
-                <Text>Flow Volume</Text>
-                <Text>12</Text>
-              </View>
-              
-            </View>
+          {(ready && this.state.popupVisible[0]) ? (
+            this.createPopUps(0)
           ):(<View></View>)}
-          
+          {(ready && this.state.popupVisible[1]) ? (
+            this.createPopUps(1)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[2]) ? (
+            this.createPopUps(2)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[3]) ? (
+            this.createPopUps(3)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[4]) ? (
+            this.createPopUps(4)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[5]) ? (
+            this.createPopUps(5)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[6]) ? (
+            this.createPopUps(6)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[7]) ? (
+            this.createPopUps(7)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[8]) ? (
+            this.createPopUps(8)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[9]) ? (
+            this.createPopUps(9)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[10]) ? (
+            this.createPopUps(10)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[11]) ? (
+            this.createPopUps(11)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[12]) ? (
+            this.createPopUps(12)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[13]) ? (
+            this.createPopUps(13)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[14]) ? (
+            this.createPopUps(14)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[15]) ? (
+            this.createPopUps(15)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[16]) ? (
+            this.createPopUps(16)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[17]) ? (
+            this.createPopUps(17)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[18]) ? (
+            this.createPopUps(18)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[19]) ? (
+            this.createPopUps(19)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[20]) ? (
+            this.createPopUps(20)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[21]) ? (
+            this.createPopUps(21)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[22]) ? (
+            this.createPopUps(22)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[23]) ? (
+            this.createPopUps(23)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[24]) ? (
+            this.createPopUps(24)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[25]) ? (
+            this.createPopUps(25)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[26]) ? (
+            this.createPopUps(26)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[27]) ? (
+            this.createPopUps(27)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[28]) ? (
+            this.createPopUps(28)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[29]) ? (
+            this.createPopUps(29)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[30]) ? (
+            this.createPopUps(30)
+          ):(<View></View>)}
+          {(ready && this.state.popupVisible[31]) ? (
+            this.createPopUps(31)
+          ):(<View></View>)}
         </ImageBackground>
 
         <View style={{flexDirection:"row",justifyContent:"space-evenly", marginVertical:5}}>
@@ -146,16 +319,23 @@ export class StatusPage extends React.Component {
                 containerStyle={styles.buttonContainer} 
                 title="Data"  
                 onPress={ () => {
-                  console.log('state',this.state)
-                  console.log('props', this.props)
-                }
+                    this.setState({
+                      popupType:0
+                    });
+                  }
                 }              
             />
             
             <Button buttonStyle={styles.ennabledButton}  
                 titleStyle={styles.buttonText}                      
                 containerStyle={styles.buttonContainer} 
-                title="Status"                
+                title="Status"    
+                onPress={ () => {
+                    this.setState({
+                      popupType:1
+                    });
+                  }
+                }             
             />            
         </View>
         { ready ? (
@@ -163,18 +343,21 @@ export class StatusPage extends React.Component {
           data={this.props.stationsNames}
           extraData={this.state}
           keyExtractor={(item, index) => index}
-          renderItem={({item}) => (
-            <ButtonGroup
+          renderItem={({item}) => {
+            console.log(item)
+            return (<ButtonGroup
               onPress={(index)=>{
-                this.setState({popupVisible:!this.state.popupVisible})
+                console.log('button pressed:',item,index)
+                this.setPopupStatus(index,item)
               }}
               selectedIndexes={this.state.selectedIndexs}
               buttons={item}
               selectMultiple={true}
               selectedButtonStyle={styles.ButtonGroupSelected}
               containerStyle={styles.buttonGroupContainer}
-            />
-          )}/>
+            />)
+
+          }}/>
           
         ) : <View></View>
         }
@@ -192,8 +375,7 @@ export class StatusPage extends React.Component {
                   <Tabs 
                     style={styles.tabs}
                     tabBarUnderlineStyle={{
-                      backgroundColor: '#D3CDBD',
-                      color:'#D3CDBD',
+                      backgroundColor: '#D3CDBD'
                     }}
                   >
                     <Tab heading={<TabHeading style={styles.tabBar}>
@@ -289,7 +471,7 @@ const styles = StyleSheet.create({
     bottom:0,
     justifyContent:'space-evenly',
     alignItems:'stretch', 
-    width:120,
+    width:150,
     height:95}
 });
 
