@@ -97,6 +97,12 @@ export class StatusPage extends React.Component {
     this.props.navigation.navigate('GraphsPage');
   }
 
+  
+  _gotToReportPage(){
+    this.props.navigation.navigate('TablePage');
+  }
+
+
   static navigationOptions = (navigation) => {
     return{
         header: props => <Header
@@ -246,7 +252,7 @@ export class StatusPage extends React.Component {
                 containerStyle={styles.buttonContainer} 
                 title="Graphs"
                 onPress={() => {
-                  this._goToGraphPage()
+                  this._goToGraphPage();
               }}
             />
             <Button buttonStyle={styles.dissableButton}
@@ -258,6 +264,9 @@ export class StatusPage extends React.Component {
                 containerStyle={styles.buttonContainer}
                 titleStyle={styles.buttonText} 
                 title="Report"
+                onPress={()=>{
+                  this._gotToReportPage();
+                }}
             />
         </View>
         <ImageBackground

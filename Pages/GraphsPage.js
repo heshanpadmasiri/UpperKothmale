@@ -142,6 +142,10 @@ export class GraphsPage extends React.Component {
         this.props.navigation.navigate('StatusPage');
     }
 
+    _gotToReportPage(){
+        this.props.navigation.navigate('TablePage');
+    }
+
     navigateOut(location){
         if (location === 1) {
             this.props.navigation.navigate('StatusPage');
@@ -179,6 +183,11 @@ export class GraphsPage extends React.Component {
                         containerStyle={styles.buttonContainer}
                         titleStyle={styles.buttonText} 
                         title="Report"
+                        onPress={() => {
+                            this._gotToReportPage();
+                        }
+
+                        }
                     />
                 </View>
                 <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>

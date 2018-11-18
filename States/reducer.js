@@ -26,6 +26,10 @@ export const GET_STATION_NAMES = 'database/station/names/LOAD';
 export const GET_STATION_NAMES_SUCCESS = 'database/station/names/LOAD_SUCCESS';
 export const GET_STATION_NAMES_FAIL = 'database/station/names/LOAD_FAIL';
 
+export const GET_STATION_REPORT = 'database/station/report/LOAD';
+export const GET_STATION_REPORT_SUCCESS = 'database/station/report/LOAD_SUCCESS';
+export const GET_STATION_REPORT_FAIL = 'database/station/report/LOAD_FAIL';
+
 export const CREATE_USER = 'database/user/CREATE';
 export const CREATE_USER_SUCCESS = 'database/user/CREATE_SUCCESS';
 export const CREATE_USER_FAIL = 'database/user/CREATE_FAIL';
@@ -53,7 +57,8 @@ const initialState = {
     loading:false,
     failed:false,
     error:null,
-    userCreated:false
+    userCreated:false,
+    stationReport:[]
 }
 
 export default function reducer (state = initialState, action){
@@ -294,6 +299,35 @@ export default function reducer (state = initialState, action){
             loading:false,
             failed:true
         }
+    case GET_STATION_REPORT:
+        return {
+            ...state,
+            loading:true,
+            failed:false
+        }
+    case GET_STATION_REPORT_SUCCESS:
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                stationReport:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
+        }        
+    case GET_STATION_REPORT_FAIL:
+        return {
+            ...state,
+            loading:false,
+            failed:true
+        }
     case CREATE_USER:
         return {
             ...state,
@@ -521,6 +555,18 @@ export function getUserHash(email){
                 params:{
                     email:email
                 }
+            }
+        }
+    }
+}
+
+export function getStationReport(){
+    return{
+        type: GET_STATION_REPORT,
+        payload:{
+            request:{
+                method:'GET',
+                url:'/station/report'
             }
         }
     }
