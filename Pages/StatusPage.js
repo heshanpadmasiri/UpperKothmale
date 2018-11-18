@@ -28,7 +28,7 @@ export class StatusPage extends React.Component {
     console.log(selectedIndex)
     this.state = {
       data:[true,true,true],
-      popupVisible:selectedIndex,
+      popupVisible:popupVisible,
       selectedIndexs:[],
       location:1,
       index: 0,
@@ -170,7 +170,7 @@ export class StatusPage extends React.Component {
   }
 
   setPopupStatus(index,item){
-    console.log(index,item)
+    console.log('rx',index,item)
     var stationName;
     if (index.length === 0){
       stationName = item[0]
@@ -191,6 +191,7 @@ export class StatusPage extends React.Component {
     console.log(i,stationName,row)
     var popupVisible = this.state.popupVisible;
     popupVisible[i] = !popupVisible[i];
+    
     this.setState({
       popupVisible:popupVisible
     });
@@ -378,7 +379,7 @@ export class StatusPage extends React.Component {
           extraData={this.state}
           keyExtractor={(item, index) => index}
 
-          renderItem={({item,index}) => {
+          renderItem={({item}) => {
             return (<ButtonGroup
               onPress={(index)=>{
                 console.log('button pressed:',item,index)
@@ -386,7 +387,6 @@ export class StatusPage extends React.Component {
               }}
               buttons={item}
               selectMultiple={true}
-              selectedIndexes={this.state.selectedIndexs[index]}
               selectedButtonStyle={styles.ButtonGroupSelected}
               containerStyle={styles.buttonGroupContainer}
             />)
