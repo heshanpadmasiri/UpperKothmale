@@ -34,8 +34,14 @@ export const LOGIN_USER = 'database/user/LOGIN';
 export const LOGIN_USER_SUCCESS = 'database/user/LOGIN_SUCCESS';
 export const LOGIN_USER_FAIL = 'database/user/LOGIN_FAIL';
 
+export const AUTHENTICATED = 'internal/user/AUTHENTICATED'
+export const REDIRECT = 'internal/nav/REDIRECT';
+
 const initialState = {
     loggedIn:false,
+    authenticated:false,
+    redirect:true,
+    userHash:"",
     rainfall:[],
     stations:[],
     stationStatus:[],
@@ -303,6 +309,38 @@ export default function reducer (state = initialState, action){
             failed:true,
             userCreated:false
         }
+    case LOGIN_USER:
+        return {
+            ...state,
+            loading:true,
+            failed:false
+        }
+    case LOGIN_USER_SUCCESS:
+        const password = action.payload.data.data.password
+        const loggedIn = password != null;
+        return{
+            ...state,
+            loading:false,
+            userHash:password,
+            loggedIn:loggedIn
+        }    
+    case LOGIN_USER_FAIL:
+        return {
+            ...state,
+            loading:false,
+            failed:true
+        }
+    case AUTHENTICATED:
+        return {
+            ...state,
+            authenticated:true,
+            redirect:true
+        }
+    case REDIRECT:
+        return{
+            ...state,
+            redirect:false
+        }              
   default:
     return state
   }
@@ -369,6 +407,18 @@ export function getWaterLevel(){
     }
 }
 
+export function authenticate(){
+    return{
+        type:AUTHENTICATED
+    }
+}
+
+export function redirect(){
+    return{
+        type:REDIRECT
+    }
+}
+
 export function getWaterLevelMonthly(){
     return {
         type: GET_RAINFALL_MONTHLY,
@@ -418,6 +468,21 @@ export function getStationNames(){
             request:{
                 method: 'GET',
                 url: '/station/names'
+            }
+        }
+    }
+}
+
+export function getUserHash(email){
+    return {
+        type: LOGIN_USER,
+        payload:{
+            request:{
+                method:'GET',
+                url:'/users/hash',
+                params:{
+                    email:email
+                }
             }
         }
     }
