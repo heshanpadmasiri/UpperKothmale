@@ -26,6 +26,7 @@
     "react-redux": "^5.1.0",
     "redux": "^4.0.1",
     "redux-axios-middleware": "^4.0.0",
+    "redux-persist": "^5.10.0",
     "toggle-switch-react-native": "^1.0.0"
   },
   "devDependencies": {

@@ -7,10 +7,12 @@ import ToggleSwitch from 'toggle-switch-react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { connect } from 'react-redux';
-import { getUserHash,authenticate,redirect } from '../States/reducer';
+import { getUserHash,authenticate,redirect,remember,forget } from '../States/reducer';
 import { sha256 } from 'react-native-sha256';
 
 export class LandingPage extends React.Component{
+
+
 
     static navigationOptions = {
         header: props => <Header
@@ -61,6 +63,13 @@ export class LandingPage extends React.Component{
                 }
             })
         }        
+    }
+
+    componentWillMount(){
+        if(this.props.state.remember && !this.props.state.authenticated){
+            this.props.navigation.navigate('GraphsPage');
+            this.props.redirect();
+        }
     }
 
 
@@ -126,9 +135,13 @@ export class LandingPage extends React.Component{
                     />
                     <View style={styles.rememberMeContainer}>
                         <ToggleSwitch
-                            isOn={false}
+                            isOn={this.props.state.remember}
                             onToggle={ (isOn) => {
-                                console.log(isOn)
+                                if(isOn){
+                                    this.props.remember()
+                                } else {
+                                    this.props.forget()
+                                }
                             }}
                         />
                         <Text>
@@ -186,7 +199,9 @@ const styles = StyleSheet.create({
   const mapDispatchToProps = {
       getUserHash,
       authenticate,
-      redirect
+      redirect,
+      remember,
+      forget
   }
 
 export default connect(mapStateToProps,mapDispatchToProps)(LandingPage);

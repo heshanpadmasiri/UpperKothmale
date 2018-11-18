@@ -36,11 +36,14 @@ export const LOGIN_USER_FAIL = 'database/user/LOGIN_FAIL';
 
 export const AUTHENTICATED = 'internal/user/AUTHENTICATED'
 export const REDIRECT = 'internal/nav/REDIRECT';
+export const REMEMBER = 'internal/user/REMEMBER';
+export const FORGET = 'internal/user/FORGET';
 
 const initialState = {
     loggedIn:false,
     authenticated:false,
     redirect:true,
+    remember:false,
     userHash:"",
     rainfall:[],
     stations:[],
@@ -53,6 +56,7 @@ const initialState = {
 }
 
 export default function reducer (state = initialState, action){
+    console.log(state,action)
   switch (action.type) {
     case GET_RAINFALL:
         return { 
@@ -340,7 +344,17 @@ export default function reducer (state = initialState, action){
         return{
             ...state,
             redirect:false
-        }              
+        }   
+    case REMEMBER:
+        return {
+            ...state,
+            remember:true
+        }
+    case FORGET:
+        return {
+            ...state,
+            remember:false
+        }
   default:
     return state
   }
@@ -416,6 +430,18 @@ export function authenticate(){
 export function redirect(){
     return{
         type:REDIRECT
+    }
+}
+
+export function remember(){
+    return {
+        type:REMEMBER
+    }
+}
+
+export function forget(){
+    return {
+        type:FORGET
     }
 }
 
