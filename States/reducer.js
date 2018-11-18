@@ -36,6 +36,7 @@ export const LOGIN_USER_FAIL = 'database/user/LOGIN_FAIL';
 
 export const AUTHENTICATED = 'internal/user/AUTHENTICATED'
 export const REDIRECT = 'internal/nav/REDIRECT';
+export const ENNABLE_REDIRECT = 'internal/nav/ENNABLE_REDIRECT';
 export const REMEMBER = 'internal/user/REMEMBER';
 export const FORGET = 'internal/user/FORGET';
 
@@ -355,6 +356,11 @@ export default function reducer (state = initialState, action){
             ...state,
             remember:false
         }
+    case ENNABLE_REDIRECT:
+        return {
+            ...state,
+            redirect:true
+        }
   default:
     return state
   }
@@ -442,6 +448,12 @@ export function remember(){
 export function forget(){
     return {
         type:FORGET
+    }
+}
+
+export function ennableRedirect(){
+    return {
+        type:ENNABLE_REDIRECT
     }
 }
 

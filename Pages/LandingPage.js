@@ -7,7 +7,7 @@ import ToggleSwitch from 'toggle-switch-react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { connect } from 'react-redux';
-import { getUserHash,authenticate,redirect,remember,forget } from '../States/reducer';
+import { getUserHash,authenticate,redirect,remember,forget,ennableRedirect } from '../States/reducer';
 import { sha256 } from 'react-native-sha256';
 
 export class LandingPage extends React.Component{
@@ -35,6 +35,9 @@ export class LandingPage extends React.Component{
     }
 
     authenticate(){
+        if(!this.props.state.redirect ){
+            this.props.ennableRedirect();
+        }
         const email = this.state.email;
         if(email !== undefined && email !== ""){
             this.props.getUserHash(email)
@@ -69,11 +72,13 @@ export class LandingPage extends React.Component{
         if(this.props.state.remember && !this.props.state.authenticated){
             this.props.navigation.navigate('GraphsPage');
             this.props.redirect();
+        } else {
+            this.props.ennableRedirect();
         }
     }
 
-
     componentDidUpdate(){
+
         if(!this.props.state.redirect ){
             return;
         }
@@ -201,7 +206,8 @@ const styles = StyleSheet.create({
       authenticate,
       redirect,
       remember,
-      forget
+      forget,
+      ennableRedirect
   }
 
 export default connect(mapStateToProps,mapDispatchToProps)(LandingPage);

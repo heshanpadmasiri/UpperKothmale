@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, ImageBackground, Image, FlatList } from 'react-native';
+import { View, StyleSheet, ImageBackground, Image, FlatList,Alert } from 'react-native';
 import commonStyles from '../Styles/Common';
 import { Tab, Tabs, TabHeading } from 'native-base'
 import { Avatar, Header, Button, Text, ButtonGroup, Overlay} from 'react-native-elements';
@@ -97,30 +97,44 @@ export class StatusPage extends React.Component {
     this.props.navigation.navigate('GraphsPage');
   }
 
-  static navigationOptions = {
-    header: props => <Header
-    backgroundColor="#D3CDBD"
-    leftComponent={<Avatar
-        size="small"
-        rounded
-        source={require('../assets/imgs/ceb_logo.jpeg')}
-        onPress={() => console.log("Works!")}
-        activeOpacity={0.7}
-      />
+  static navigationOptions = (navigation) => {
+    return{
+        header: props => <Header
+        backgroundColor="#D3CDBD"
+        leftComponent={<Avatar
+            size="small"
+            rounded
+            source={require('../assets/imgs/ceb_logo.jpeg')}
+            onPress={() => console.log("Works!")}
+            activeOpacity={0.7}
+        />
 
+        }
+        rightComponent={<Avatar
+            size="small"
+            rounded
+            source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
+            onPress={() => {
+                Alert.alert(
+                    'Log out',
+                    "Are you sure you wan't to log out",
+                    [                       
+                        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+                        {text: 'OK', onPress: () => {
+                            navigation.navigation.navigate('LandingPage')
+                        }},
+                    ],
+                    { cancelable: false }
+                )
+            }}
+            activeOpacity={0.7}
+        />}
+        centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff',fontFamily:'OpenSans'  } }}
+        
+        />,      
+        headerTransparent:true
     }
-    rightComponent={<Avatar
-        size="small"
-        rounded
-        source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
-        onPress={() => console.log("Works!")}
-        activeOpacity={0.7}
-      />}
-    centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff',fontFamily:'OpenSans'  } }}
-    
-    />,      
-    headerTransparent:true
-}
+    }
 
   createPopUps(i){    
     console.log('x',this.props)

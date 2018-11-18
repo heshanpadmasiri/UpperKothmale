@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions, processColor, FlatList } from 'react-native';
+import { View, StyleSheet, Dimensions, processColor, FlatList, Alert } from 'react-native';
 import { Text, Header, Avatar, CheckBox, Button} from 'react-native-elements';
 import { Slider } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -13,7 +13,8 @@ import {
             getRainFallHourly,
             getWaterLevel,
             getWaterLevelMonthly,
-            getWaterLevelHourly
+            getWaterLevelHourly,
+            forget
         } from '../States/reducer';
 import { Graph } from 'graphlib';
 import ToggleSwitch from 'toggle-switch-react-native';
@@ -36,30 +37,46 @@ export class GraphsPage extends React.Component {
         this._goToStatusPage = this._goToStatusPage.bind(this);
     }
 
-    static navigationOptions = {
-        header: props => <Header
-        backgroundColor="#D3CDBD"
-        leftComponent={<Avatar
-            size="small"
-            rounded
-            source={require('../assets/imgs/ceb_logo.jpeg')}
-            onPress={() => console.log("Works!")}
-            activeOpacity={0.7}
-          />
+    static navigationOptions = (navigation) => {
+        return{
+            header: props => <Header
+            backgroundColor="#D3CDBD"
+            leftComponent={<Avatar
+                size="small"
+                rounded
+                source={require('../assets/imgs/ceb_logo.jpeg')}
+                onPress={() => console.log("Works!")}
+                activeOpacity={0.7}
+            />
 
+            }
+            rightComponent={<Avatar
+                size="small"
+                rounded
+                source={{uri: "https://banner2.kisspng.com/20180828/sxw/kisspng-clip-art-computer-icons-user-download-chamber-of-d-talonpaw-svg-png-icon-free-download-175238-on-5b84c95a116717.2809616615354289540713.jpg"}}
+                onPress={() => {
+                    Alert.alert(
+                        'Log out',
+                        "Are you sure you wan't to log out",
+                        [                       
+                            {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+                            {text: 'OK', onPress: () => {
+                                navigation.navigation.navigate('LandingPage')
+                            }},
+                        ],
+                        { cancelable: false }
+                    )
+                }}
+                activeOpacity={0.7}
+            />}
+            centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff',fontFamily:'OpenSans'  } }}
+            
+            />,      
+            headerTransparent:true
         }
-        rightComponent={<Avatar
-            size="small"
-            rounded
-            source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
-            onPress={() => console.log("Works!")}
-            activeOpacity={0.7}
-          />}
-        centerComponent={{ text: 'Upper Kotmale Hydropower Project', style: { color: '#fff',fontFamily:'OpenSans'  } }}
+        }
         
-        />,      
-        headerTransparent:true
-    }
+
 
     switchStationType(){
         const newStationType = (this.state.stationType + 1) % 2;
@@ -411,7 +428,8 @@ const mapDispatchToProps = {
     getRainFallHourly,
     getWaterLevel,
     getWaterLevelMonthly,
-    getWaterLevelHourly
+    getWaterLevelHourly,
+    forget
 };
 
 export default connect(mapSateToProps, mapDispatchToProps)(GraphsPage);
