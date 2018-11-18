@@ -22,13 +22,28 @@ export const GET_STATION_STATUS = 'database/station/LOAD';
 export const GET_STATION_STATUS_SUCCESS = 'database/station/LOAD_SUCCESS';
 export const GET_STATION_STATUS_FAIL = 'database/station/LOAD_FAIL';
 
+export const GET_STATION_NAMES = 'database/station/names/LOAD';
+export const GET_STATION_NAMES_SUCCESS = 'database/station/names/LOAD_SUCCESS';
+export const GET_STATION_NAMES_FAIL = 'database/station/names/LOAD_FAIL';
+
+export const CREATE_USER = 'database/user/CREATE';
+export const CREATE_USER_SUCCESS = 'database/user/CREATE_SUCCESS';
+export const CREATE_USER_FAIL = 'database/user/CREATE_FAIL';
+
+export const LOGIN_USER = 'database/user/LOGIN';
+export const LOGIN_USER_SUCCESS = 'database/user/LOGIN_SUCCESS';
+export const LOGIN_USER_FAIL = 'database/user/LOGIN_FAIL';
+
 const initialState = {
+    loggedIn:false,
     rainfall:[],
     stations:[],
     stationStatus:[],
+    stationNames:[],
     loading:false,
     failed:false,
-    error:null
+    error:null,
+    userCreated:false
 }
 
 export default function reducer (state = initialState, action){
@@ -239,6 +254,55 @@ export default function reducer (state = initialState, action){
             loading:false,
             failed:true
         }
+    case GET_STATION_NAMES:
+        return {
+            ...state,
+            loading:true,
+            failed:false
+        }
+    case GET_STATION_NAMES_SUCCESS:
+        if(action.payload.data.sucess){
+            return {
+                ...state,
+                loading:false,
+                failed:false,
+                // todo: change this to the format in which the database responds
+                stationNames:action.payload.data.data
+            }
+        } else {
+            return {
+                ...state,
+                loading:false,
+                failed:true,
+                error:action.payload.data.msg
+            }
+        }        
+    case GET_STATION_NAMES_FAIL:
+        return {
+            ...state,
+            loading:false,
+            failed:true
+        }
+    case CREATE_USER:
+        return {
+            ...state,
+            loading:true,
+            failed:false,
+            userCreated:false
+        }
+    case CREATE_USER_SUCCESS:
+        return {
+            ...state,
+            loading:false,
+            userCreated:true
+        }
+    case CREATE_USER_FAIL:
+        return {
+            ...state,
+            loading:false,
+            failed:true,
+            userCreated:false
+        }
   default:
     return state
   }
@@ -342,6 +406,41 @@ export function getStationStatus(){
             request:{
                 method: 'GET',
                 url: '/station/readings'
+            }
+        }
+    }
+}
+
+export function getStationNames(){
+    return {
+        type: GET_STATION_NAMES,
+        payload:{
+            request:{
+                method: 'GET',
+                url: '/station/names'
+            }
+        }
+    }
+}
+
+export function createUser(firstName,middleName,surName,email,idNumber,station,designation,gender,password){
+    return {
+        type: CREATE_USER,
+        payload:{
+            request:{
+                method:'POST',
+                url: '/users/create-user',
+                data:{
+                    firstName:firstName,
+                    middleName:middleName,
+                    surName:surName,
+                    email:email,
+                    idNumber:idNumber,
+                    station:station,
+                    designation:designation,
+                    gender:gender,
+                    password:password
+                }
             }
         }
     }
