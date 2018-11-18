@@ -95,11 +95,12 @@ export class SignupPage extends React.Component {
                 var station = this.state.station;
                 var designation = this.state.designation;
                 if (station === ""){
-                    station = this.props.stationNames[0]
+                    console.log(this.props)
+                    station = this.props.state.stationNames[0]
                 } 
-                if(designation === ""{
+                if(designation === ""){
                     designation = this.state.designations[0]
-                })
+                }
                 //todo if station or designation is empty set the default value
                 const gender = this.state.genderSelect? "Female":"Male"
                 sha256(this.state.password).then( hash => {
