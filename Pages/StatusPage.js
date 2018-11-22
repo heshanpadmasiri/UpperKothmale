@@ -143,11 +143,10 @@ export class StatusPage extends React.Component {
     }
 
   createPopUps(i){    
-    console.log('x',this.props)
     var stationData = this.props.stations;
     return(
       <View style={styles.popUp}>
-        <View style={{backgroundColor:'#ff6633', alignItems:'center'}}>
+        <View style={{backgroundColor:'#ff6633', alignItems:'center', height:25}}>
           <Text>{stationData[i].station_name}</Text>
         </View>
         {this.state.popupType === 0?(
@@ -156,15 +155,15 @@ export class StatusPage extends React.Component {
               flexDirection:'row',
               justifyContent:'space-evenly'
             }}>
-              <Text>Water Level</Text>
-              <Text>{stationData[i].waterLevel}</Text>
+              <Text style={styles.popupText}>Water Level</Text>
+              <Text style={styles.popupText}>{stationData[i].waterLevel}</Text>
             </View>
             <View style={{
               flexDirection:'row',
               justifyContent:'space-evenly'
             }}>
-              <Text>Rain Fall    </Text>
-              <Text>  {stationData[i].rainfall}</Text>
+              <Text style={styles.popupText}>Rain Fall</Text>
+              <Text style={styles.popupText}>{stationData[i].rainfall}</Text>
             </View>
           </View>)
           :(
@@ -173,15 +172,15 @@ export class StatusPage extends React.Component {
               flexDirection:'row',
               justifyContent:'space-evenly'
             }}>
-              <Text>Water Level</Text>
-              <Text>{stationData[i].waterLevelStatus}</Text>
+              <Text style={styles.popupText}>Water Level</Text>
+              <Text style={styles.popupText}>{stationData[i].waterLevelStatus}</Text>
             </View>
             <View style={{
               flexDirection:'row',
               justifyContent:'space-evenly'
             }}>
-              <Text>Rain Fall      </Text>
-              <Text>{stationData[i].rainFallStauts}</Text>
+              <Text style={styles.popupText}>Rain Fall</Text>
+              <Text style={styles.popupText}>{stationData[i].rainFallStauts}</Text>
             </View>
           </View>)}
         
@@ -190,7 +189,6 @@ export class StatusPage extends React.Component {
   }
 
   setPopupStatus(index,item){
-    console.log('rx',index,item)
     var stationName;
     if (index.length === 0){
       stationName = item[0]
@@ -199,7 +197,6 @@ export class StatusPage extends React.Component {
     }
     var i;
     var row;
-    console.log(this.props.stations);
     for (let index = 0; index < this.props.stations.length; index++) {
       const station = this.props.stations[index];
       if(station.station_name === stationName){
@@ -208,14 +205,12 @@ export class StatusPage extends React.Component {
         break;
       }
     }
-    console.log(i,stationName,row)
     var popupVisible = this.state.popupVisible;
     popupVisible[i] = !popupVisible[i];
     
     this.setState({
       popupVisible:popupVisible
     });
-    console.log(this.state.popupVisible)
   } 
 
   render() {
@@ -405,7 +400,6 @@ export class StatusPage extends React.Component {
           renderItem={({item}) => {
             return (<ButtonGroup
               onPress={(index)=>{
-                console.log('button pressed:',item,index)
                 this.setPopupStatus(index,item)
               }}
               buttons={item}
@@ -440,16 +434,20 @@ export class StatusPage extends React.Component {
                                 </TabHeading>}>
 
                       <View style={styles.line} >
-                        <Text>Activate Statues:                     {station.item.activateStatues}</Text>
+                        <Text style={styles.lineTextLeft}>Activate Statues</Text>
+                        <Text style={styles.lineTextRight}>{station.item.activateStatues}</Text>
                       </View>
                       <View style={styles.line} >
-                        <Text>Rainfall Status:                        {station.item.rainFallStauts}</Text>
+                        <Text style={styles.lineTextLeft}>Rainfall Status</Text>
+                        <Text style={styles.lineTextRight}>{station.item.rainFallStauts}</Text>
                       </View>
                       <View style={styles.line} >
-                        <Text>WaterLevel pressure Status:{station.item.waterLevelPressureStatus}</Text>
+                        <Text style={styles.lineTextLeft}>WaterLevel pressure Status</Text>
+                        <Text style={styles.lineTextRight}>{station.item.waterLevelPressureStatus}</Text>
                       </View>
                       <View style={styles.line} >
-                        <Text>WaterLevel Status:                 {station.item.waterLevelStatus}</Text>
+                        <Text style={styles.lineTextLeft}>WaterLevel Status</Text>
+                        <Text style={styles.lineTextRight}>{station.item.waterLevelStatus}</Text>
                       </View>
                     </Tab>
                   </Tabs>
@@ -497,7 +495,8 @@ const styles = StyleSheet.create({
   },
   tabs:{
     backgroundColor:'#D3CDBD',
-    color: '#D3CDBD'
+    color: '#D3CDBD',
+    width:332
   },
   tabBar:{    
     backgroundColor: '#D3CDBD',
@@ -508,7 +507,17 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     justifyContent:"flex-start", 
     backgroundColor:"#e0dcd1",
-    fontFamily:'OpenSans'
+    fontFamily:'OpenSans',
+    width:166,
+  },
+  lineTextLeft:{
+    backgroundColor:"#e0dcd1",
+    width:268,
+    paddingLeft:5
+  },
+  lineTextRight:{
+    backgroundColor:"#e0dcd1",
+    width:64
   },
   buttonGroupContainer:{
     backgroundColor:'#F1F3F6',
@@ -517,9 +526,12 @@ const styles = StyleSheet.create({
   ButtonGroupSelected:{
     backgroundColor:'#D8DCE5',
   },
-  
+  popupText:{
+    width:80,
+    fontFamily:'OpenSans',
+    paddingHorizontal:6
+  },
   popUp:{
-    borderRadius:10,
     backgroundColor:'#992600',
     position:'absolute', 
     top:20, 
@@ -528,8 +540,8 @@ const styles = StyleSheet.create({
     bottom:0,
     justifyContent:'space-evenly',
     alignItems:'stretch', 
-    width:160,
-    height:95}
+    width:180,
+    height:85}
 });
 
 const mapStateToProps = state => {
