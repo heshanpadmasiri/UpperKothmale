@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions, processColor, FlatList, Alert } from 'react-native';
 import { Text, Header, Avatar, CheckBox, Button} from 'react-native-elements';
-import { Slider } from 'react-native-elements';
+import  Slider  from 'react-native-slider';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import commonStyles from '../Styles/Common';
@@ -30,7 +30,14 @@ export class GraphsPage extends React.Component {
             stationType:1,
             timeFrame:2,
             value:0,
-            loading:true      
+            loading:true,
+            marker: {
+                enabled: true,
+                digits: 2,
+                backgroundTint: processColor('teal'),
+                markerColor: processColor('#F0C0FF8C'),
+                textColor: processColor('white'),
+              }    
         }
         this.updateValues = this.updateValues.bind(this);
         this.navigateOut = this.navigateOut.bind(this);
@@ -121,8 +128,7 @@ export class GraphsPage extends React.Component {
             const ref = this.props.rainFallData[i];
             const dataElement = ref.value;
             const start = Math.round(this.state.value * 4);
-            const t = this.state.timeFrame === 1 ? 20 : 25;
-            const end = dataElement.length - (t - start);
+            const end = start + 6;
             const temp = dataElement.slice(start,end);
             if(temp.length < 1){
                 return;
@@ -133,6 +139,7 @@ export class GraphsPage extends React.Component {
                 name:ref.name
             }); 
         }
+        console.log('updateValues:' ,values)
         this.setState({
             values:values
         })
@@ -281,6 +288,14 @@ export class GraphsPage extends React.Component {
                     thumbImage={
                         require('../assets/imgs/slider_grip.png')
                     }
+                    thumbStyle={{width: 130,
+                        height: 40,
+                        shadowColor: 'black',
+                        shadowOffset: {width: 0, height: 1},
+                        shadowOpacity: 0.5,
+                        shadowRadius: 1,
+                    }}
+                    thumbTintColor={'#D3CDBD'}
                     maximumTrackTintColor={"#b3b3b3"}
                     minimumTrackTintColor={"#b3b3b3"}
                     step={0.25}
@@ -288,11 +303,16 @@ export class GraphsPage extends React.Component {
                 
                 {(this.props.state.loading === false && this.props.state.failed === false && this.state.live === false)?(
                     <FlatList 
+
                     data={this.props.values}
                     extraData={this.state}
                     renderItem={({item}) => (
                         
                         <LineChart style={styles.chart}
+                            xAxis={{
+                                    granularityEnabled: true,
+                                    granularity: 1,
+                                }}
                             data={{
                                 dataSets:[
                                     {label:item.name, 
@@ -318,8 +338,11 @@ export class GraphsPage extends React.Component {
                     data={this.state.values}
                     extraData={this.state}
                     renderItem={({item}) => (
-                        
-                        <LineChart style={styles.chart}
+                        <LineChart style={styles.chart}   
+                            xAxis={{
+                                    granularityEnabled: true,
+                                    granularity: 1,
+                                }}                      
                             data={{
                                 dataSets:[
                                     {label:item.name, 
@@ -336,7 +359,7 @@ export class GraphsPage extends React.Component {
                                     }
                                     }]
                                 }}
-                            chartDescription={{text: 'Test'}}
+                            chartDescription={{text: ''}}
         
                         />          
                     )}
@@ -386,7 +409,6 @@ const styles = StyleSheet.create({
 
 const mapSateToProps = state => {
     const rainfallRecord = state.rainfall;
-    console.log('state:',state)
     station_ids = Object.keys(rainfallRecord);
     var rainFallData = [];
     for (let i = 0; i < station_ids.length; i++) {
@@ -397,26 +419,34 @@ const mapSateToProps = state => {
         for (let index = 0; index < rainfalls.length; index++) {
             const data = rainfalls[index];
             //record.push(Math.max(data.rfd_crfValue,0));
-            
-            record.push(data);
+            if (data.y !== undefined){
+                
+                record.push(data);
+            }
         }
+        record = record.sort(function(a, b) {
+            var x = a['x']; var y = b['x'];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        })
         rainFallData.push({
             key:id,
             value:record,
             name:name
         });
     }
+    console.log('rainFallData:',rainFallData)
     var values = []
     for (let i = 0; i < station_ids.length; i++) {
         const ref = rainFallData[i];
         const dataElement = ref.value;
         const start = 0;
-        const t = 25;
-        const end = dataElement.length - (t - start);
-        const temp = dataElement.slice(start,end);
-        if(temp.length < 1){
-            return;
+        const end =6;
+        if (end < 0){
+            end = dataElement.length
         }
+        const temp = dataElement.slice(start,end);
+            
+        console.log('temp:',temp)
         values.push({
             key: ref.key,
             value: temp,

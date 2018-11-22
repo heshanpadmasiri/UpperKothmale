@@ -27,7 +27,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 //todo: change this to the public ip the server
 const client = axios.create({
-  baseURL: 'http://192.168.1.103:8080'
+  baseURL: 'http://10.10.0.92:8080'
 });
 
 const persistConfig = {

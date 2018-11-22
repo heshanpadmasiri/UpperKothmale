@@ -119,7 +119,7 @@ export class StatusPage extends React.Component {
         rightComponent={<Avatar
             size="small"
             rounded
-            source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
+            source={{uri: "https://banner2.kisspng.com/20180828/sxw/kisspng-clip-art-computer-icons-user-download-chamber-of-d-talonpaw-svg-png-icon-free-download-175238-on-5b84c95a116717.2809616615354289540713.jpg"}}
             onPress={() => {
                 Alert.alert(
                     'Log out',
