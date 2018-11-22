@@ -111,8 +111,8 @@ export class TablePage extends React.Component {
             <View style={{padding:20}}>
               <ScrollView>
                 <Table borderStyle={{borderWidth: 2, marginVertical:15,borderColor:'#D8DCE5'}}>
-                  <Row data={this.state.headings} style={styles.head} textStyle={styles.text}/>
-                  <Rows data={this.props.state.stationReport} textStyle={styles.text}/>
+                  <Row data={this.state.headings} style={styles.head} textStyle={styles.tableText}/>
+                  <Rows data={this.props.state.stationReport} textStyle={styles.tableText}/>
 
 
                 </Table>
@@ -153,6 +153,10 @@ const styles = StyleSheet.create({
   },
   text:{
     fontFamily:'OpenSans'
+  },
+  tableText:{
+    fontFamily:'OpenSans',
+    margin: 6
   },
   head: { 
     height: 40, 
