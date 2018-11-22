@@ -163,8 +163,8 @@ export class StatusPage extends React.Component {
               flexDirection:'row',
               justifyContent:'space-evenly'
             }}>
-              <Text>Rain Fall</Text>
-              <Text>{stationData[i].rainfall}</Text>
+              <Text>Rain Fall    </Text>
+              <Text>  {stationData[i].rainfall}</Text>
             </View>
           </View>)
           :(
@@ -180,7 +180,7 @@ export class StatusPage extends React.Component {
               flexDirection:'row',
               justifyContent:'space-evenly'
             }}>
-              <Text>Rain Fall</Text>
+              <Text>Rain Fall      </Text>
               <Text>{stationData[i].rainFallStauts}</Text>
             </View>
           </View>)}
@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
     bottom:0,
     justifyContent:'space-evenly',
     alignItems:'stretch', 
-    width:150,
+    width:160,
     height:95}
 });
 
